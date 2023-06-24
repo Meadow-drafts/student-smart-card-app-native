@@ -112,6 +112,9 @@ const RegisterScreen = ({navigation}) => {
             <Text style={{color: '#78a6c8', fontWeight: '700'}}> Login</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+            <Text style={{color: '#78a6c8', fontWeight: '700'}}> HomeScreen</Text>
+          </TouchableOpacity>
         </View>
     </SafeAreaView>
   );
