@@ -17,7 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 import CustomButton from '../components/CustomButton';
-const roles = ["admin", "ecurity", "User", "Delegate"]
+const roles = ["admin", "Security", "User", "Delegate"]
 
 const RegisterScreen = ({navigation}) => {
 

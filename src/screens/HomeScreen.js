@@ -5,6 +5,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Tabbar from "@mindinventory/react-native-tab-bar-interaction";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import {NavigationContainer} from '@react-navigation/native'
+import ScannerScreen from './ScannerScreen'
+import UserProfile from '../components/UserProfile';
+import Icon from 'react-native-vector-icons/FontAwesome'
+import WelcomePage from '../components/WelcomePage';
+
+
 const tabs =[
     {
         name: 'Home',
@@ -33,17 +39,40 @@ const tabs =[
       },
     
     ];
+
+    const screenOptions = (route, color) => {
+        let iconName;
+      
+        switch (route.name) {
+          case 'Home':
+            iconName = 'home';
+            break;
+          case 'Scanner':
+            iconName = 'qrcode';
+            break;
+          case 'Profile':
+            iconName = 'user';
+            break;
+          default:
+            break;
+        }
+      
+        return <Icon name={iconName} color={color} size={24} />;
+      };
+
+
     function FirstScreen(){
         return(
             <>
-            <Text>Welcome Page</Text>
+            <UserProfile/>
             </>
         )
     }
     function SecondScreen(){
         return(
             <>
-             <Text>Scan Page</Text>
+             {/* <Text>Scan Page</Text> */}
+             <ScannerScreen/>
             </>
         )
     }
@@ -51,7 +80,7 @@ const tabs =[
     function ThirdScreen(){
         return(
             <>
-            <Text>Profile Page</Text>
+            <UserProfile/>
             </>
         )
     }
@@ -68,10 +97,22 @@ const HomeScreen = () => {
     }
     return(
        <NavigationContainer independent={true}>
-        <Tab.Navigator>
-            <Tab.Screen name = "First" component={FirstScreen} />
-            <Tab.Screen name = "Second" component={SecondScreen} />
-            <Tab.Screen name = "Third" component={ThirdScreen} />
+        <Tab.Navigator screenOptions={({route}) => ({
+        tabBarIcon: ({color}) => screenOptions(route, color),
+        headerShown: false, 
+        tabBarActiveTintColor:"#78a6c8",
+        tabBarInactiveTintColor:"#46474a",
+        tabBarStyle:{
+            elevation: 0,
+        }
+      })
+      
+    }
+    
+      >
+            <Tab.Screen name = "Home" component={WelcomePage} />
+            <Tab.Screen name = "Scanner" component={ScannerScreen} />
+            <Tab.Screen name = "Profile" component={UserProfile} />
         </Tab.Navigator>
        </NavigationContainer>
     )
