@@ -11,7 +11,7 @@ const TeamCards = ({item }) => {
         <TouchableOpacity
           style={styles.logoContainer}>
           <Image
-          source={{ uri: item?.user   }}
+          source={{ uri: item?.imageUrl   }}
           resizeMode='contain'
           style={styles.logoImage}
           />
@@ -21,7 +21,7 @@ const TeamCards = ({item }) => {
   )
 }
 const styles = StyleSheet.create({
-  logoContainer: {
+  container: {
       // flex: 1,
     // //   justifyContent: "center",
     // //   alignItems: "flex-end",

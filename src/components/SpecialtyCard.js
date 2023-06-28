@@ -21,10 +21,10 @@ const SpecialtyCard = ({specialty}) => {
 
         <View style={styles.textContainer}>
           <Text style={styles.jobName} numberOfLines={1}>
-           {specialty?.title}
+           {specialty?.name}
           </Text>
           <Text style={styles.jobType}>
-            {specialty?.second}
+           Fee: {specialty?.total_fee}
           </Text>
         </View>
 

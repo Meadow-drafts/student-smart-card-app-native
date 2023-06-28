@@ -8,6 +8,8 @@ export default function InputField({
   keyboardType,
   fieldButtonLabel,
   fieldButtonFunction,
+  value,
+  onChangeText
 }) {
   return (
     <View
@@ -22,6 +24,8 @@ export default function InputField({
       {inputType == 'password' ? (
         <TextInput
           placeholder={label}
+          value={value}
+          onChangeText={onChangeText}
           keyboardType={keyboardType}
           style={{flex: 1, paddingVertical: 0}}
           secureTextEntry={true}

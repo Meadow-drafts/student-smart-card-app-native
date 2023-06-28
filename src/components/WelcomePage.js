@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'
 // import "expo-router/entry";
 import {ScrollView, Text, View, StyleSheet, ImageBackground, Button,Modal, TextInput,Image, TouchableOpacity,StatusBar,FlatList } from 'react-native';
 import {Avatar, ListItem, Icon, SearchBar } from 'react-native-elements'
@@ -10,35 +11,37 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import value from '../images/value.png'
 
 const image = require('../images/value.png');
-
+const API_URL ="http://localhost:400"
 export default function WelcomePage({navigation}) {
+    const [specialties, setSpecialties] = useState([])
+    const [users, setUsers] = useState([])
 
-    const specialties = [
-        {
-          title: 'Test',
-          second: 'software eng 3'
-        },
-        {
-          title: 'Test',
-          second: 'software eng2'
-        },
-        {
-          title: 'Test',
-          second: 'software eng1'
-        },
-        {
-          title: 'Test',
-          second: 'cnms 1'
-        },
-        {
-          title: 'Test',
-          second: 'cnms2'
-        },
-        {
-          title: 'Test',
-          second: 'cnms3'
-        },
-      ]
+    // const specialties = [
+    //     {
+    //       title: 'Test',
+    //       second: 'software eng 3'
+    //     },
+    //     {
+    //       title: 'Test',
+    //       second: 'software eng2'
+    //     },
+    //     {
+    //       title: 'Test',
+    //       second: 'software eng1'
+    //     },
+    //     {
+    //       title: 'Test',
+    //       second: 'cnms 1'
+    //     },
+    //     {
+    //       title: 'Test',
+    //       second: 'cnms2'
+    //     },
+    //     {
+    //       title: 'Test',
+    //       second: 'cnms3'
+    //     },
+    //   ]
 
       const members =[
         {   
@@ -61,6 +64,33 @@ export default function WelcomePage({navigation}) {
       function handleClick(){
 
       }
+
+      const fetchSpecialties = async() =>{
+       try{
+        await axios.get('http://192.168.43.213:4000/specialties')
+        .then((response)=>{
+            // console.log(response)
+            const result = response.data.data
+            setSpecialties(result)
+        })
+    }catch(error){
+        console.log("error",error)
+    }
+
+      }
+
+
+      const fetchUsers = async() =>{
+       await axios.get(`http://192.168.43.213:4000/auth/users`)
+        .then((response)=>{
+            console.log('users',response)
+            setUsers(response.data)
+        })
+      }
+      useEffect(()=>{
+        fetchSpecialties();
+        fetchUsers();
+      },[]);
 
   // Return the View
   return (
@@ -88,13 +118,13 @@ export default function WelcomePage({navigation}) {
             <Text style={styles.cardTitle}>Team</Text>
             <View style={styles.teamCards}>
             <FlatList
-            data={members}
+            data={users}
             renderItem={({ item }) => 
               <TeamCards
-                item={item} key={item?.id}
+                item={item} key={item?._id}
               />
             }
-            keyExtractor={item => item?.id}
+            keyExtractor={item => item?._id}
             contentContainerStyle={{ columnGap: 16}}
             horizontal
           />
@@ -103,7 +133,7 @@ export default function WelcomePage({navigation}) {
             <Text style={styles.cardTitle}>Specialties</Text>
             <View style={styles.popularCards}>
                 {specialties?.map((specialty) => (
-                    <SpecialtyCard specialty={specialty}
+                    <SpecialtyCard specialty={specialty} key={specialty._id}
                     />
                 ))}
             </View>

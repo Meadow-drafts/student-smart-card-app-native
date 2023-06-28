@@ -100,7 +100,7 @@ const HomeScreen = () => {
         <Tab.Navigator screenOptions={({route}) => ({
         tabBarIcon: ({color}) => screenOptions(route, color),
         headerShown: false, 
-        tabBarActiveTintColor:"#78a6c8",
+        tabBarActiveTintColor:"#326789",
         tabBarInactiveTintColor:"#46474a",
         tabBarStyle:{
             elevation: 0,
