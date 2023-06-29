@@ -18,6 +18,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import {Picker} from 'react-native-picker/picker';
 import LoginSVG from '../images/login.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 
 import CustomButton from '../components/CustomButton';
@@ -35,35 +37,38 @@ const LoginScreen = ({navigation}) => {
     {label: 'Security', value: 'security'},
     {label: 'Delegate', value: 'delegate'},
   ]);
+  const[userInfo, setUserInfo] = useState("")
 
 
   // Define a function to handle the form submission
   const handleSubmit = async () => {
     // Validate the input fields
-    console.log(email)
-    console.log(password)
-    console.log(role)
-    if (!email || !password || !role) {
+     if (!email || !password || !role) {
       // Show an alert if any field is empty
       Alert.alert("Error", "Please enter your username and password.");
-    } else {
-      // Create an object with the user credentials
-      const user = {
-        email: email,
-        password: password,
-        role: role,
-      };
-      console.log(user)
+    } else {     
       try {
         // Make a POST request to the API endpoint with the user object as the body
          await axios.post("http://192.168.43.213:4000/auth/users/login", {
           email: email,
-        password: password,
-        role: role,
+          password: password,
+          role: role,
         }).then((response) =>{
-          console.log(response)
+          console.log(response.data.accessToken)
+           // Create an object with the user credentials
+      const user = {
+        email: email,
+        role: role,
+        token:response.data.accessToken,
+      };
+      console.log(user)
+      // Store the access token on device storage
+      AsyncStorage.setItem('userInfo', JSON.stringify(user), (error) => {
+        if (error) {
+          console.log(error);
+        }
+      });
         })
-
       } catch (error) {
         // Handle the error
         console.error("Error logging in: ", error.message);
@@ -72,6 +77,8 @@ const LoginScreen = ({navigation}) => {
       }
     }
   };
+
+    
   return (
     <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
       <View style={{paddingHorizontal: 25}}>

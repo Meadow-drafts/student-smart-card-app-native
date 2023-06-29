@@ -75,7 +75,7 @@ export default function ScannerScreen() {
       <CustomButton label={"Scan Code"} onPress={() => setIsModalVisible(true)} />
 
       {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
-      <ResultDisplay isVisible={isModalVisible} onClose={onModalClose}text={text} >
+      <ResultDisplay isVisible={isModalVisible} onClose={onModalClose} text={text} >
         {/* <ResultList onCloseModal={onModalClose} weapons= {weapons} alcohol={alcohol} drugs={drugs}  skull={skull} gore={goreResults} nudity={nudityResults}/> */}
       </ResultDisplay>
     </View>

@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView,Text, View, StyleSheet,Image, Button,Modal } from 'react-native';
 import {Avatar, ListItem, Icon} from 'react-native-elements'
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 
 export default function UserProfile({navigation}) {
 
+  const [user, setUser] = useState('')
     const account = [
         {
           title: 'Name',
-          value: 'JaneDoe',
+          value: (`${user.email}`),
           icon: 'person'
         },
         {
           title: 'Email',
-          value: 'JaneDoe@gmail.com',
+          value: (`${user.email}`),
           icon: 'mail'
         },
         {
           title: 'Role',
-          value: 'Security Officer',
+          value: (`${user.role}`),
           icon: 'archive'
         },
         {
@@ -43,6 +44,24 @@ export default function UserProfile({navigation}) {
     
       ]
 
+      // get the token
+      async function getToken() {
+        try {
+        let userDetails = await AsyncStorage.getItem('userInfo');
+        console.log("user info is" + userDetails);
+        console.log(userDetails.email)
+        setUser(JSON.parse(userDetails))
+        console.log(user?.email)
+        } catch (error) {
+        console.log("error while getting token",error);
+        }
+    }
+
+    useEffect(()=>{
+      // fetchSpecialties();
+      getToken()
+      // fetchUsers();
+    },[]);
   // Return the View
   return (
     <ScrollView style={styles.container}>
@@ -59,8 +78,8 @@ export default function UserProfile({navigation}) {
                 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
             }}
             />
-            <Text style={styles.heading}>John Doe</Text>
-            <Text>Role: Security guard</Text>
+            <Text style={styles.heading}>{user?.email}</Text>
+            <Text>Role: {user?.role}</Text>
         </View>          
          
       </View>

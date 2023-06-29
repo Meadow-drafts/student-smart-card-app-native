@@ -1,5 +1,8 @@
-import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
+import { Modal, View, Text, Pressable, StyleSheet, } from 'react-native';
+import { Icon} from 'react-native-elements'
+
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+// import Icons from 'react-native-vector-icons/MaterialIcons';
 
 export default function ResultDisplay({ isVisible, onClose, text }) {
   return (
@@ -11,7 +14,11 @@ export default function ResultDisplay({ isVisible, onClose, text }) {
             <MaterialIcons name="close" color="#fff" size={22} />
           </Pressable>
         </View>
-       <Text>{text}</Text>
+        <View style={styles.content}>
+        <Text style={styles.contentTitle}>Verified <Icon name='verified' /></Text>
+        <Text>{text}</Text>
+        </View>
+       
       </View>
     </Modal>
   );
@@ -48,5 +55,16 @@ const styles = StyleSheet.create({
       paddingHorizontal: 50,
       paddingVertical: 20,
     },
+    content:{
+      padding: 20,
+      alignContent:"center"
+      
+    },
+    contentTitle:{
+      fontSize:20,
+      fontWeight:"500",
+      textAlign:"center",
+
+    }
   });
   

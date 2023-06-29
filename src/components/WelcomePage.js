@@ -9,12 +9,15 @@ import ProfileHeader from "react-native-profile-header"
 import SpecialtyCard from './SpecialtyCard'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import value from '../images/value.png'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 const image = require('../images/value.png');
 const API_URL ="http://localhost:400"
 export default function WelcomePage({navigation}) {
     const [specialties, setSpecialties] = useState([])
     const [users, setUsers] = useState([])
+    const [user, setUser] = useState('')
 
     // const specialties = [
     //     {
@@ -83,12 +86,24 @@ export default function WelcomePage({navigation}) {
       const fetchUsers = async() =>{
        await axios.get(`http://192.168.43.213:4000/auth/users`)
         .then((response)=>{
-            console.log('users',response)
             setUsers(response.data)
         })
       }
+
+      // get the token
+        async function getToken() {
+            try {
+            let userDetails = await AsyncStorage.getItem('userInfo');
+            console.log("user info is" + userDetails);
+            setUser(userDetails)
+            } catch (error) {
+            console.log("error while getting token",error);
+            }
+        }
+  
       useEffect(()=>{
         fetchSpecialties();
+        getToken()
         fetchUsers();
       },[]);
 
