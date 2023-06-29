@@ -54,13 +54,9 @@ const LoginScreen = ({navigation}) => {
           password: password,
           role: role,
         }).then((response) =>{
-          console.log(response.data.accessToken)
+          console.log(response.data)
            // Create an object with the user credentials
-      const user = {
-        email: email,
-        role: role,
-        token:response.data.accessToken,
-      };
+      const user = response.data
       console.log(user)
       // Store the access token on device storage
       AsyncStorage.setItem('userInfo', JSON.stringify(user), (error) => {

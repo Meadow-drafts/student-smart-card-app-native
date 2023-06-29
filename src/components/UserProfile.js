@@ -11,7 +11,7 @@ export default function UserProfile({navigation}) {
     const account = [
         {
           title: 'Name',
-          value: (`${user.email}`),
+          value: (`${user.username}`),
           icon: 'person'
         },
         {
@@ -22,7 +22,7 @@ export default function UserProfile({navigation}) {
         {
           title: 'Role',
           value: (`${user.role}`),
-          icon: 'archive'
+          icon: 'engineering'
         },
         {
           title: 'School',
@@ -39,7 +39,7 @@ export default function UserProfile({navigation}) {
         {
           title: 'How to use',
           value: 'JaneDoe@gmail.com',
-          icon: 'engineering'
+          icon: 'functions'
         },
     
       ]
@@ -50,8 +50,9 @@ export default function UserProfile({navigation}) {
         let userDetails = await AsyncStorage.getItem('userInfo');
         console.log("user info is" + userDetails);
         console.log(userDetails.email)
-        setUser(JSON.parse(userDetails))
-        console.log(user?.email)
+        const details = JSON.parse(userDetails)
+        setUser(details.user)
+        console.log(user)
         } catch (error) {
         console.log("error while getting token",error);
         }
@@ -78,7 +79,7 @@ export default function UserProfile({navigation}) {
                 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
             }}
             />
-            <Text style={styles.heading}>{user?.email}</Text>
+            <Text style={styles.heading}>{user?.username}</Text>
             <Text>Role: {user?.role}</Text>
         </View>          
          
@@ -87,6 +88,7 @@ export default function UserProfile({navigation}) {
   
         </View> */}
         <Text style={styles.account}>Account</Text>
+     
       <View style={[styles.card, styles.elevation] }>
       {
             account.map((item, i) => (

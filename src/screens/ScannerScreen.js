@@ -30,8 +30,11 @@ export default function ScannerScreen() {
   // What happens when we scan the bar code
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    setText(data)
-    console.log('Type: ' + type + '\nData: ' + data)
+    
+    // console.log('Type: ' + type + '\nData: ' + data)
+    const response = JSON.parse(data)
+    setText(response)
+    console.log(response.name)
   };
 
   // Check permissions and return the screens

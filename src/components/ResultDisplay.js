@@ -17,6 +17,7 @@ export default function ResultDisplay({ isVisible, onClose, text }) {
         <View style={styles.content}>
         <Text style={styles.contentTitle}>Verified <Icon name='verified' /></Text>
         <Text>{text}</Text>
+        {/* <Text>{JSON.parse(text.name)}</Text> */}
         </View>
        
       </View>

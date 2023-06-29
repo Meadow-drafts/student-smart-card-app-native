@@ -18,6 +18,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import CustomButton from '../components/CustomButton';
 const roles = ["admin", "Security", "User", "Delegate"]
@@ -54,6 +55,13 @@ const RegisterScreen = ({ navigation }) => {
           role: role,
         }).then((response) => {
           console.log(response)
+          const user = response.data
+          // Store the access token on device storage
+      AsyncStorage.setItem('userInfo', JSON.stringify(user), (error) => {
+        if (error) {
+          console.log(error);
+        }
+      });
         })
 
       } catch (error) {

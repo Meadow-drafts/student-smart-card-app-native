@@ -19,51 +19,7 @@ export default function WelcomePage({navigation}) {
     const [users, setUsers] = useState([])
     const [user, setUser] = useState('')
 
-    // const specialties = [
-    //     {
-    //       title: 'Test',
-    //       second: 'software eng 3'
-    //     },
-    //     {
-    //       title: 'Test',
-    //       second: 'software eng2'
-    //     },
-    //     {
-    //       title: 'Test',
-    //       second: 'software eng1'
-    //     },
-    //     {
-    //       title: 'Test',
-    //       second: 'cnms 1'
-    //     },
-    //     {
-    //       title: 'Test',
-    //       second: 'cnms2'
-    //     },
-    //     {
-    //       title: 'Test',
-    //       second: 'cnms3'
-    //     },
-    //   ]
-
-      const members =[
-        {   
-            id:1555,
-            user:"https://images.unsplash.com/photo-1558979158-65a1eaa08691?w=500&h=500&fit=crop"
-        },
-        {
-            id:54542,
-            user:"https://unsplash.com/photos/a-woman-in-pink-shorts-and-a-white-jacket-holding-a-cup-2i2QbPNCVIU"
-        },
-        {
-            id:48746,
-            user:"https://unsplash.com/photos/a-woman-in-pink-shorts-and-a-white-jacket-holding-a-cup-2i2QbPNCVIU"
-        }
-        ,{
-            id:311,
-            user:"https://unsplash.com/photos/a-woman-standing-in-a-dark-room-with-her-eyes-closed-lFwJlFnHXys"
-        }
-      ]
+   
       function handleClick(){
 
       }
@@ -94,7 +50,7 @@ export default function WelcomePage({navigation}) {
         async function getToken() {
             try {
             let userDetails = await AsyncStorage.getItem('userInfo');
-            console.log("user info is" + userDetails);
+            // console.log("user info is" + userDetails);
             setUser(userDetails)
             } catch (error) {
             console.log("error while getting token",error);
