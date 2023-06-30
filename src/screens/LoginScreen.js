@@ -37,7 +37,6 @@ const LoginScreen = ({navigation}) => {
     {label: 'Security', value: 'security'},
     {label: 'Delegate', value: 'delegate'},
   ]);
-  const[userInfo, setUserInfo] = useState("")
 
 
   // Define a function to handle the form submission

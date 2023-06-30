@@ -24,7 +24,7 @@ const SpecialtyCard = ({specialty}) => {
            {specialty?.name}
           </Text>
           <Text style={styles.jobType}>
-           Fee: {specialty?.total_fee}
+           Fee: {specialty?.total_fee} XAF
           </Text>
         </View>
 
@@ -37,10 +37,12 @@ const styles = StyleSheet.create({
       justifyContent: "space-between",
       alignItems: "center",
       flexDirection: "row",
-      backgroundColor: "#78a6c8",
+      backgroundColor: "white",
       borderRadius: 12,
       padding: 16,
-      marginHorizontal: 20
+      marginHorizontal: 20,
+      borderColor: "#78a6c8",
+      borderWidth: 1,
     },
     logoContainer: {
       width: 50,
@@ -62,13 +64,13 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight:"500",
     //   fontFamily: "DMBold",
-      color: 'white',
+      color: 'gray',
     },
     jobType: {
       fontSize: 10,
-      color: 'black',
+      color: '#78a6c8',
       marginTop: 3,
-      textTransform: "capitalize",
+      fontWeight:"500"
     },
   });
 

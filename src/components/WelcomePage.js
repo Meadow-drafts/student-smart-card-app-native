@@ -101,9 +101,16 @@ export default function WelcomePage({navigation}) {
           />
             
              </View>
-            <Text style={styles.cardTitle}>Specialties</Text>
+             <View style={styles.specialty}>
+             <Text style={styles.cardTitle}>Specialties</Text>
+             <TouchableOpacity onPress={() => navigation.navigate('AllSpecialtiesScreen')}>
+            <Text style={styles.cardTitle}> See more</Text>
+          </TouchableOpacity>
+            {/* <Text style={styles.cardTitle}>See more</Text> */}
+             </View>
+            
             <View style={styles.popularCards}>
-                {specialties?.map((specialty) => (
+                {specialties.slice(0,3)?.map((specialty) => (
                     <SpecialtyCard specialty={specialty} key={specialty._id}
                     />
                 ))}
@@ -143,13 +150,18 @@ image:{
   },
   profilecard:{
     alignItems: 'center',
-  }, 
+  },
+  specialty:{
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  paddingHorizontal:20 , 
+}, 
   cardTitle:{
     fontSize:16,
     marginLeft:20,
     paddingTop: 40,
     fontWeight:'500',
-    color:'gray'
+    color:'gray',
   }, 
   teamCards:{
     marginLeft: 50,
@@ -157,6 +169,7 @@ image:{
   popularCards: {
     marginVertical: 16,
     gap: 12,
+    paddingBottom: 30,
   },
   card: {
     backgroundColor: 'white',
