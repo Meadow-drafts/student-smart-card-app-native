@@ -3,16 +3,19 @@ import axios from 'axios'
 // import "expo-router/entry";
 import { ScrollView, Text, View, StyleSheet, ImageBackground, Button, Modal, TextInput, Image, TouchableOpacity, StatusBar, FlatList } from 'react-native';
 import { Avatar, ListItem, Icon, SearchBar } from 'react-native-elements'
-
+import Tabs from './tabs';
 import SpecialtyCard from '../components/SpecialtyCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+const tabs =["About", "Qualifications", "Responsibilities"] ;
 
 const image = require('../images/value.png');
 const API_URL = "http://localhost:400"
 export default function AllSpecialtiesScreen({ navigation }) {
     const [specialties, setSpecialties] = useState([])
+    const [activeTab, setActiveTab] = useState(tabs[0]);
+
 
     const fetchSpecialties = async () => {
         try {
@@ -27,6 +30,45 @@ export default function AllSpecialtiesScreen({ navigation }) {
         }
 
     }
+
+    
+    const displayTabContent = ()=>{
+        switch (activeTab){
+            case "Qualifications":
+                return (
+                    <View>
+                          {specialties.slice(0,3)?.map((specialty) => (
+                    <SpecialtyCard specialty={specialty} key={specialty._id}
+                    />
+                ))}
+                    </View>
+                   
+                )
+                break;
+                case "About":
+                    return (
+                        <View>
+                              {specialties.slice(4,6)?.map((specialty) => (
+                        <SpecialtyCard specialty={specialty} key={specialty._id}
+                        />
+                    ))}
+                        </View>
+                       
+                    )
+                    break;
+                case "Responsibilities":
+                    return (
+                        <View>
+                              {specialties.slice(7,8)?.map((specialty) => (
+                        <SpecialtyCard specialty={specialty} key={specialty._id}
+                        />
+                    ))}
+                        </View>
+                       
+                    )
+                break;
+        }
+      }
 
 
     //   // get the token
@@ -51,23 +93,36 @@ export default function AllSpecialtiesScreen({ navigation }) {
         // onPress={() => navigation.navigate('HomeScreen')}
 
         <ScrollView style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginHorizontal: 30, marginTop: 10 }}>
-                <Ionicons
-                    name="arrow-back-outline"
-                    size={20}
-                    color="#326789"
-                    style={{ marginRight: 45, transform: [{ rotate: '2deg' }] }}
-                />
-                {/* <Image source={backIcon} style={{ width: 20, height: 20 }} /> */}
-            </TouchableOpacity>
-            <Text>Specialties</Text>
 
             <View style={styles.team}>
                 <View style={styles.specialty}>
-                    <Text style={styles.cardTitle}>Specialties</Text>
-                    <Text style={styles.cardTitle}>See more</Text>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 30, marginTop: 40 }}>
+                        <Ionicons
+                            name="arrow-back-outline"
+                            size={20}
+                            color="#326789"
+                            style={{ marginRight: 45, transform: [{ rotate: '2deg' }] }}
+                        />
+                        {/* <Image source={backIcon} style={{ width: 20, height: 20 }} /> */}
+                    </TouchableOpacity>
+                    <Text style={styles.cardTitle}>All Specialties</Text>
+                    <Ionicons
+                        name="ellipsis-horizontal"
+                        size={20}
+                        color="#326789"
+                        style={{ marginRight: 35, marginTop: 40, transform: [{ rotate: '2deg' }] }}
+                    />
                 </View>
+                <View style={{padding:12, paddingBottom:100}}>
+                             <Text>tabs here</Text>
 
+                            <Tabs
+                                tabs={tabs}
+                                activeTab={activeTab}
+                                setActiveTab={setActiveTab}
+                            />
+                            {displayTabContent()}
+                        </View>
                 <View style={styles.popularCards}>
                     {specialties?.map((specialty) => (
                         <SpecialtyCard specialty={specialty} key={specialty._id}
@@ -117,7 +172,7 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 16,
-        marginLeft: 20,
+        // marginLeft: 20,
         paddingTop: 40,
         fontWeight: '500',
         color: 'gray',
