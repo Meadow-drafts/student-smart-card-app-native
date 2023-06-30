@@ -5,10 +5,11 @@ import { ScrollView, Text, View, StyleSheet, ImageBackground, Button, Modal, Tex
 import { Avatar, ListItem, Icon, SearchBar } from 'react-native-elements'
 import Tabs from './tabs';
 import SpecialtyCard from '../components/SpecialtyCard';
+import SpecialtyDetailsCard from '../components/SpecialtyDetailsCard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const tabs =["About", "Qualifications", "Responsibilities"] ;
+const tabs =["Level 1", "Level 2", "Level 3"] ;
 
 const image = require('../images/value.png');
 const API_URL = "http://localhost:400"
@@ -34,33 +35,37 @@ export default function AllSpecialtiesScreen({ navigation }) {
     
     const displayTabContent = ()=>{
         switch (activeTab){
-            case "Qualifications":
+            case "Level 1":
                 return (
-                    <View>
-                          {specialties.slice(0,3)?.map((specialty) => (
-                    <SpecialtyCard specialty={specialty} key={specialty._id}
+                    <View style={styles.popularCards}>
+                          {specialties
+            ?.filter((specialty) => specialty.level === 1)
+            .map((specialty) => (
+                    <SpecialtyDetailsCard specialty={specialty} key={specialty._id}
                     />
                 ))}
                     </View>
                    
                 )
                 break;
-                case "About":
+                case "Level 2":
                     return (
-                        <View>
-                              {specialties.slice(4,6)?.map((specialty) => (
-                        <SpecialtyCard specialty={specialty} key={specialty._id}
+                        <View style={styles.popularCards}>
+                              {specialties
+            ?.filter((specialty) => specialty.level === 2).map((specialty) => (
+                        <SpecialtyDetailsCard specialty={specialty} key={specialty._id}
                         />
                     ))}
                         </View>
                        
                     )
                     break;
-                case "Responsibilities":
+                case "Level 3":
                     return (
-                        <View>
-                              {specialties.slice(7,8)?.map((specialty) => (
-                        <SpecialtyCard specialty={specialty} key={specialty._id}
+                        <View style={styles.popularCards}>
+                              {specialties
+            ?.filter((specialty) => specialty.level === 3).map((specialty) => (
+                        <SpecialtyDetailsCard specialty={specialty} key={specialty._id}
                         />
                     ))}
                         </View>
@@ -101,7 +106,7 @@ export default function AllSpecialtiesScreen({ navigation }) {
                             name="arrow-back-outline"
                             size={20}
                             color="#326789"
-                            style={{ marginRight: 45, transform: [{ rotate: '2deg' }] }}
+                            style={{ marginRight: 5, transform: [{ rotate: '2deg' }] }}
                         />
                         {/* <Image source={backIcon} style={{ width: 20, height: 20 }} /> */}
                     </TouchableOpacity>
@@ -110,12 +115,10 @@ export default function AllSpecialtiesScreen({ navigation }) {
                         name="ellipsis-horizontal"
                         size={20}
                         color="#326789"
-                        style={{ marginRight: 35, marginTop: 40, transform: [{ rotate: '2deg' }] }}
+                        style={{ marginRight: 15, marginTop: 40, transform: [{ rotate: '2deg' }] }}
                     />
                 </View>
-                <View style={{padding:12, paddingBottom:100}}>
-                             <Text>tabs here</Text>
-
+                <View style={{padding:12, paddingBottom:100, marginLeft:10}}>
                             <Tabs
                                 tabs={tabs}
                                 activeTab={activeTab}
@@ -123,12 +126,7 @@ export default function AllSpecialtiesScreen({ navigation }) {
                             />
                             {displayTabContent()}
                         </View>
-                <View style={styles.popularCards}>
-                    {specialties?.map((specialty) => (
-                        <SpecialtyCard specialty={specialty} key={specialty._id}
-                        />
-                    ))}
-                </View>
+                
             </View>
 
 
@@ -165,17 +163,22 @@ const styles = StyleSheet.create({
     profilecard: {
         alignItems: 'center',
     },
+    popularCards: {
+        marginVertical: 16,
+        gap: 12,
+        paddingBottom: 30,
+      },
     specialty: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 20,
+        paddingHorizontal: 5,
     },
     cardTitle: {
         fontSize: 16,
         // marginLeft: 20,
         paddingTop: 40,
-        fontWeight: '500',
-        color: 'gray',
+        fontWeight: '700',
+        color: '#326789',
     },
     teamCards: {
         marginLeft: 50,

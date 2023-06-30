@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, TouchableOpacity,StyleSheet, Image } from 'react-native'
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 const SpecialtyCard = ({specialty}) => {
@@ -10,12 +11,12 @@ const SpecialtyCard = ({specialty}) => {
       >
         <TouchableOpacity
           style={styles.logoContainer}>
-          <Image
-          source={{ uri:  'https://t4.ftcdn.net/jpg/05/05/61/73/360_F_505617309_NN1CW7diNmGXJfMicpY9eXHKV4sqzO5H.jpg'
-      }}
-          resizeMode='contain'
-          style={styles.logoImage}
-          />
+          <Ionicons
+                name="book"
+                size={20}
+                color="#326789"
+                style={styles.logoImage}
+            />  
         </TouchableOpacity>
        
 
@@ -67,10 +68,10 @@ const styles = StyleSheet.create({
       color: 'gray',
     },
     jobType: {
-      fontSize: 10,
+      fontSize: 12,
       color: '#78a6c8',
       marginTop: 3,
-      fontWeight:"500"
+      fontWeight:"700"
     },
   });
 

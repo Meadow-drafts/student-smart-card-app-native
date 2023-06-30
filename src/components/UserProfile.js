@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView,Text, View, StyleSheet,Image, Button,Modal } from 'react-native';
+import { ScrollView,Text, View, StyleSheet,Image, Button,Modal, TouchableOpacity } from 'react-native';
 import {Avatar, ListItem, Icon} from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -67,7 +67,12 @@ export default function UserProfile({navigation}) {
   return (
     <ScrollView style={styles.container}>
         <View style={styles.logout}>
-        <Icon name="logout"/>
+        <TouchableOpacity
+          
+          onPress={() => navigation.navigate('LoginScreen')} >
+          <Icon name="logout"/>
+        </TouchableOpacity>
+        
         </View>
       <View style={styles.profilecard}>
         <View>

@@ -42,7 +42,8 @@ export default function WelcomePage({navigation}) {
       const fetchUsers = async() =>{
        await axios.get(`http://192.168.43.213:4000/auth/users`)
         .then((response)=>{
-            setUsers(response.data)
+            setUsers(response.data.data)
+            console.log(response.data.data[0].imageUrl)
         })
       }
 

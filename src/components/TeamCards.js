@@ -9,12 +9,14 @@ const TeamCards = ({item }) => {
     //   onPress={handleNavigate}
       >
         <TouchableOpacity
-          style={styles.logoContainer}>
+          // style={styles.logoContainer}
+          >
           <Image
-          source={{ uri: item?.imageUrl   }}
-          resizeMode='contain'
+          source={{ uri:item?.imageUrl  }}
+          resizeMode='cover'
           style={styles.logoImage}
           />
+          {/* <img src={item.imageUrl} alt="user"/> */}
         </TouchableOpacity>
        
    </TouchableOpacity>
@@ -26,7 +28,7 @@ const styles = StyleSheet.create({
     // //   justifyContent: "center",
     // //   alignItems: "flex-end",
     //   flexDirection: "row",
-      backgroundColor: "#78a6c8",
+      // backgroundColor: "#78a6c8",
     //   borderRadius: 15,
     //   width: 50,
     //     height: 50,
@@ -35,16 +37,16 @@ const styles = StyleSheet.create({
     //   padding: 16,
     //   marginHorizontal: 10
     },
-    // logoImage: {
-    //   width: 50,
-    //   height: 50,
-    // //   flexDirection: 'row',
-    //   backgroundColor: 'black',
-    //   borderRadius: 16,
-    // //   marginHorizontal: 5,
-    // //   justifyContent: "space-between",
-    // //   alignItems: "center",
-    // },
+    logoImage: {
+      width: 50,
+      height: 50,
+    //   flexDirection: 'row',
+      backgroundColor: 'black',
+      borderRadius: 16,
+    //   marginHorizontal: 5,
+    //   justifyContent: "space-between",
+    //   alignItems: "center",
+    },
     // logoImage: {
     //   width: "70%",
     //   height: "70%",
@@ -57,4 +59,8 @@ export default TeamCards
 
 
 
-  
+  //https://www.vecteezy.com/free-vector/user-icon
+  //https://www.pngwing.com/en/search?q=user
+  //https://www.vecteezy.com/free-vector/user-avatar
+  //https://unsplash.com/s/photos/user
+  //https://www.atlassian.com/agile/project-management/user-stories
