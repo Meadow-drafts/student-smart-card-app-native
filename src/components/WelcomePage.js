@@ -107,7 +107,6 @@ export default function WelcomePage({navigation}) {
              <TouchableOpacity onPress={() => navigation.navigate('AllSpecialtiesScreen')}>
             <Text style={styles.cardTitle}> See more</Text>
           </TouchableOpacity>
-            {/* <Text style={styles.cardTitle}>See more</Text> */}
              </View>
             
             <View style={styles.popularCards}>

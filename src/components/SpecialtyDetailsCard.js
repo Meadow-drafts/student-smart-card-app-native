@@ -97,14 +97,10 @@ const SpecialtyDetailsCard = ({specialty}) => {
                 size={20}
                 color="#326789"
                 style={{  transform: [{ rotate: '2deg' }] }}
-            />             
-    }
-            </View>
-         
-          </View>
-       
+            /> }
+            </View>         
+          </View>       
         </View>
-
     </TouchableOpacity>
   )
 }
