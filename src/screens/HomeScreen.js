@@ -10,6 +10,8 @@ import UserProfile from '../components/UserProfile';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import WelcomePage from '../components/WelcomePage';
 import AttendanceScreen from './AttendanceScreen'
+import TimeTableScreen from './TimeTableScreen'
+import WeeklyCalendar from '../components/WeekCalendar';
 
 const tabs = [
     {
@@ -51,6 +53,9 @@ const screenOptions = (route, color) => {
             iconName = 'qrcode';
             break;
         case 'Attendance':
+            iconName = 'table';
+            break;
+        case 'TimeTable':
             iconName = 'table';
             break;
         case 'Profile':
@@ -111,6 +116,7 @@ const HomeScreen = () => {
                 <Tab.Screen name="Home" component={WelcomePage} />
                 <Tab.Screen name="Scanner" component={ScannerScreen} />
                 <Tab.Screen name="Attendance" component={AttendanceScreen} />
+                <Tab.Screen name="TimeTable" component={TimeTableScreen} />
                 <Tab.Screen name="Profile" component={UserProfile} />
             </Tab.Navigator>
     )
