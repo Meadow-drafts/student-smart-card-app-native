@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, TouchableOpacity,StyleSheet, Image } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Card , ListItem} from 'react-native-elements';
 
 
 const CourseCard = ({specialty}) => {
@@ -9,7 +10,7 @@ const CourseCard = ({specialty}) => {
       style={styles.container}
     //   onPress={handleNavigate}
       >
-        <View
+        <TouchableOpacity
           style={styles.logoContainer}>
           <Ionicons
                 name="book"
@@ -17,21 +18,15 @@ const CourseCard = ({specialty}) => {
                 color="#326789"
                 style={styles.logoImage}
             />  
-          <Ionicons
-                name="book"
-                size={20}
-                color="#326789"
-                style={styles.logoImage}
-            />  
-        </View>
+        </TouchableOpacity>
        
 
         <View style={styles.textContainer}>
           <Text style={styles.jobName} numberOfLines={1}>
-           {specialty?.name}Course name
+           one
           </Text>
           <Text style={styles.jobType}>
-           Teacher: {specialty?.total_fee} XAF
+           Fee: {specialty?.total_fee} XAF
           </Text>
         </View>
 
@@ -39,6 +34,21 @@ const CourseCard = ({specialty}) => {
   )
 }
 const styles = StyleSheet.create({
+    card: {
+        marginVertical: 16,
+        gap: 12,
+        paddingBottom: 30,
+    },
+
+    content: {
+        backgroundColor: "white",
+        borderRadius: 12,
+        padding: 16,
+        marginHorizontal: 20,
+        borderColor: "#78a6c8",
+        borderWidth: 1,
+        // marginVertical: 16,
+    },
     container: {
       flex: 1,
       justifyContent: "space-between",
@@ -58,7 +68,6 @@ const styles = StyleSheet.create({
       borderRadius: 16,
       justifyContent: "center",
       alignItems: "center",
-      flexDirection: "column",
     },
     logoImage: {
       width: "70%",

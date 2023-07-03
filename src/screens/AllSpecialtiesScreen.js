@@ -101,12 +101,12 @@ export default function AllSpecialtiesScreen({ navigation }) {
 
             <View style={styles.team}>
                 <View style={styles.specialty}>
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 30, marginTop: 40 }}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10, marginTop: 40 }}>
                         <Ionicons
-                            name="arrow-back-outline"
-                            size={20}
+                            name="md-chevron-back"
+                            size={28}
                             color="#326789"
-                            style={{ marginRight: 5, transform: [{ rotate: '2deg' }] }}
+                            style={{ marginRight: 0, transform: [{ rotate: '2deg' }] }}
                         />
                         {/* <Image source={backIcon} style={{ width: 20, height: 20 }} /> */}
                     </TouchableOpacity>

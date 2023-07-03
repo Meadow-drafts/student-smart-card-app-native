@@ -114,9 +114,10 @@ const HomeScreen = () => {
                 }
             })}>
                 <Tab.Screen name="Home" component={WelcomePage} />
+                <Tab.Screen name="TimeTable" component={TimeTableScreen} />
+
                 <Tab.Screen name="Scanner" component={ScannerScreen} />
                 <Tab.Screen name="Attendance" component={AttendanceScreen} />
-                <Tab.Screen name="TimeTable" component={TimeTableScreen} />
                 <Tab.Screen name="Profile" component={UserProfile} />
             </Tab.Navigator>
     )
