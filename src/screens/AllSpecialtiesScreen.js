@@ -39,11 +39,11 @@ export default function AllSpecialtiesScreen({ navigation }) {
                 return (
                     <View style={styles.popularCards}>
                           {specialties
-            ?.filter((specialty) => specialty.level === 1)
-            .map((specialty) => (
-                    <SpecialtyDetailsCard specialty={specialty} key={specialty._id}
-                    />
-                ))}
+                        ?.filter((specialty) => specialty.level === 1)
+                        .map((specialty) => (
+                                <SpecialtyDetailsCard specialty={specialty} key={specialty._id}
+                                />
+                            ))}
                     </View>
                    
                 )

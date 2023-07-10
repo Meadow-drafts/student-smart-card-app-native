@@ -28,7 +28,27 @@ import axios from 'axios'
 
 const Item = ({ item }) => {
 
-  
+    const [incidents, setIncidents] = useState([])
+    
+    const fetchIncidents = async () => {
+        try {
+            await axios.get('http://192.168.43.213:4000/incidents')
+                .then((response) => {
+                    // console.log(response)
+                    const result = response.data.data
+                    setIncidents(result)
+                })
+        } catch (error) {
+            console.log("error", error)
+        }
+
+    }
+
+    useEffect(() => {
+        fetchIncidents();
+        // getToken()
+        // fetchUsers();
+    }, []);
     return (
         <View style={styles.content}>
             <ListItem bottomDivider>
@@ -49,30 +69,9 @@ const Item = ({ item }) => {
     )
 }
 
-const Notification = ({navigation}) => {
+const ViewIncidents = ({navigation}) => {
 
     const [selectedStartDate, setSelectedStartDate] = useState(null);
-    const [announcements, setAnnouncemnets] = useState([])
-    
-    const fetchAnnouncements = async () => {
-        try {
-            await axios.get('http://192.168.43.213:4000/announcements')
-                .then((response) => {
-                    // console.log(response)
-                    const result = response.data.data
-                    setAnnouncemnets(result)
-                })
-        } catch (error) {
-            console.log("error", error)
-        }
-
-    }
-
-    useEffect(() => {
-        fetchAnnouncements();
-        // getToken()
-        // fetchUsers();
-    }, []);
 
     const onDateChange = (date) => {
         setSelectedStartDate(date);
@@ -92,7 +91,7 @@ const Notification = ({navigation}) => {
                     />
                     {/* <Image source={backIcon} style={{ width: 20, height: 20 }} /> */}
                 </TouchableOpacity>
-                <Text style={styles.cardTitle}>Notifications</Text>
+                <Text style={styles.cardTitle}>Incidents</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Request')}>
                 <Ionicons
                     name="md-create"
@@ -104,11 +103,14 @@ const Notification = ({navigation}) => {
                 
             </View>
 
-            <View style={styles.card}>            
+            <View style={styles.card}>
+
+                <Text>Incidents</Text>
+               
                 <FlatList
-                    data={announcements}
+                    data={incidents}
                     renderItem={({ item }) => <Item item={item} />}
-                    keyExtractor={item => item._id}
+                    keyExtractor={item => item.id}
                 />
             </View>
 
@@ -154,4 +156,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Notification;
+export default ViewIncidents;

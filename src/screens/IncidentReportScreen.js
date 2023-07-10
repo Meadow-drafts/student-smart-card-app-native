@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ListItem, Avatar, Input } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../components/CustomButton';
-import SendRequest from '../components/requests/SendRequest'
-import ViewRequest from '../components/requests/ViewRequest';
-// import Tabs from './tabs';
-import Tabs from '../components/requests/Tabs';
-import axios from 'axios';
+import ViewIncidents from '../components/incidents/ViewIncidents'
+import ReportIncident from '../components/incidents/ReportIncident'
+import Tabs from './tabs';
 
 const Announcements = [
     {
@@ -30,19 +28,22 @@ const Announcements = [
         date: "2023/12/05",
     },
 ]
-const tabs = ["All Requests", "Send Request"];
+
+const tabs =["All incidents", "Report Incident"] ;
 
 
 const Item = ({ item }) => {
     return (
         <View style={styles.content}>
             <ListItem bottomDivider>
-            <Ionicons
-                        name="md-newspaper"
-                        size={20}
-                        color="#326789"
-                        style={{ marginRight: 0, transform: [{ rotate: '2deg' }] }}
-                    />
+                <Avatar
+                    rounded
+                    icon={{
+                        name: 'person-outline',
+                        type: 'material',
+                        size: 26,
+                    }}
+                />
                 <ListItem.Content>
                     <ListItem.Title>{item.title}</ListItem.Title>
                     <ListItem.Subtitle style={{ fontSize: 13 }}>{item.content}</ListItem.Subtitle>
@@ -52,60 +53,52 @@ const Item = ({ item }) => {
     )
 }
 
-const RequestScreen = ({ navigation }) => {
-    const [requests, setRequests] = useState([])
+const IncidentReportScreen = ({ navigation }) => {
+    const [value, onChangeText] = useState('Useless Multiline Placeholder');
     const [activeTab, setActiveTab] = useState(tabs[0]);
 
-    const fetchIncidents = async () => {
-        try {
-            await axios.get('http://192.168.43.213:4000/feedbacks')
-                .then((response) => {
-                    console.log(response.data.data)
-                    const result = response.data.data
-                    setRequests(result)
-                    console.log("Requests", result)
-                    console.log("Requests", requests)
-                })
-        } catch (error) {
-            console.log("error", error)
-        }
+    const [selectedStartDate, setSelectedStartDate] = useState(null);
 
-    }
+    const onDateChange = (date) => {
+        setSelectedStartDate(date);
+    };
 
-    const displayTabContent = () => {
-        switch (activeTab) {
-            case "All Requests":
+    const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+
+    const displayTabContent = ()=>{
+        switch (activeTab){
+            case "All incidents":
                 return (
                     <View style={styles.popularCards}>
-                        {requests.map((item) =>(
-                            <ViewRequest key={item._id} item={item}/>
-                        ))}                       
+                         
+                    <ViewIncidents />
                     </View>
-
+                   
                 )
                 break;
-            case "Send Request":
-                return (
-                    <View style={styles.popularCards}>
-
-                        <SendRequest />
-                    </View>
-
-                )
+                case "Report Incident":
+                    return (
+                        <View style={styles.popularCards}>
+                        
+                        <ReportIncident />
+                        </View>
+                       
+                    )
+                    break;
+                case "Level 3":
+                    return (
+                        <View style={styles.popularCards}>
+                              {specialties
+            ?.filter((specialty) => specialty.level === 3).map((specialty) => (
+                        <SpecialtyDetailsCard specialty={specialty} key={specialty._id}
+                        />
+                    ))}
+                        </View>
+                       
+                    )
                 break;
-
         }
-    }
-
-
-    useEffect(() => {
-        fetchIncidents();
-        // getToken()
-        // fetchUsers();
-    }, []);
-    useEffect(() => {
-    console.log("Requests", requests); // Log the updated requests state
-  }, [requests]);
+      }
 
     return (
         <View style={styles.container}>
@@ -119,7 +112,7 @@ const RequestScreen = ({ navigation }) => {
                     />
                     {/* <Image source={backIcon} style={{ width: 20, height: 20 }} /> */}
                 </TouchableOpacity>
-                <Text style={styles.cardTitle}>Student Request</Text>
+                <Text style={styles.cardTitle}>Incident Report</Text>
                 <Ionicons
                     name="ellipsis-horizontal"
                     size={20}
@@ -127,18 +120,44 @@ const RequestScreen = ({ navigation }) => {
                     style={{ marginRight: 15, marginTop: 40, transform: [{ rotate: '2deg' }] }}
                 />
             </View>
-            {/* <ViewRequest /> */}
+            <View style={{padding:12, paddingBottom:100, marginLeft:10}}>
+                            <Tabs
+                                tabs={tabs}
+                                activeTab={activeTab}
+                                setActiveTab={setActiveTab}
+                            />
+                            {displayTabContent()}
+                        </View>
 
-            <View style={{ padding: 12, paddingBottom: 100, marginLeft: 10 }}>
-                <Tabs
-                    tabs={tabs}
-                    activeTab={activeTab}
-                    setActiveTab={setActiveTab}
-                />
-                {displayTabContent()}
+            <View style={styles.card}>
+
+                <Text style={{ textAlign: "center" }}>Do you wish to report an incident?</Text>
+                <View stye={{margin:100}}>
+                    <Input
+                        placeholder='Incident title'
+                    // leftIcon={{ type: 'font-awesome', name: 'chevron-left' }}
+                    />
+
+                    <Input
+                        placeholder="Narate incident"
+                        multiline={true}
+                        numberOfLines={4}
+                        leftIcon={{ type: 'font-awesome', name: 'comment' }}
+                        style={{ flexWrap: 'wrap' }}
+                    // style={styles}
+                    //    onChangeText={value => this.setState({ comment: value })}
+                    />
+                </View>
+
+                {/* <View style={{ flexDirection: "row", }}>
+                    <CustomButton />
+                    <CustomButton />
+                </View> */}
+
             </View>
 
-
+            <View >
+            </View>
         </View>
     );
 };
@@ -187,8 +206,8 @@ const styles = StyleSheet.create({
         marginVertical: 16,
         gap: 12,
         paddingBottom: 30,
-    },
+      },
 });
 
 
-export default RequestScreen;
+export default IncidentReportScreen;
