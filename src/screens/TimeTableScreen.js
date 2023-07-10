@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const TmeTableScreen = () => {
     const [timetable, setTimetable] = useState({})
-    const [weeklyTimetable, setWeeklyTimetable] = useState([timetable.timetable])
+    const [weeklyTimetable, setWeeklyTimetable] = useState([])
     // const [monDayDate, setMonDayDate] = useState('')
 
     const [selectedStartDate, setSelectedStartDate] = useState(null);
@@ -29,13 +29,10 @@ const TmeTableScreen = () => {
         try {
             await axios.get('http://192.168.43.213:4000/timeTables/weeklyTimetable/2023-07-10')
                 .then((response) => {
-                    // console.log(response)
-                    const result = response.data
-                    setTimetable(result)
-                    setWeeklyTimetable(result.timetable)
-                    console.log("result", result)
-                    console.log("timetable", result.timetable)
-                    console.log(response.data)
+                    const result = response.data.timetable
+                    console.log("result",result )
+                    setWeeklyTimetable(result)
+                    console.log("timetable", weeklyTimetable)
                 })
         } catch (error) {
             console.log("error", error)
@@ -82,8 +79,26 @@ const TmeTableScreen = () => {
             </View>
             <View style={styles.card}>
 
-                    {weeklyTimetable?.map((item) => (
-                        <Period item={item}  />
+                    {weeklyTimetable.length > 0 && weeklyTimetable?.map((item) => (
+                        <View style={styles.content} key={item._id}>
+                        <ListItem bottomDivider>
+                        <View style={{ flexDirection: 'column', }}>
+                            <Text style={{color:'gray', fontSize:10, fontWeight:'700'}}>{item.time?.split('-')[0]}</Text>
+                            <Ionicons
+                                name="remove"
+                                size={30}
+                                color="#326789"
+                                // style={{ transform: [{ rotate: '90deg' }], marginTop: 10 }}
+                            />
+                            <Text style={{color:'gray', fontSize:10, fontWeight:'700'}}>{item.time?.split('-')[1]}</Text>
+                        </View>
+            
+                        <ListItem.Content>
+                            <ListItem.Title style={{color:'#326789', fontSize:16, fontWeight:'700'}}>{item.course?.name}</ListItem.Title>
+                            <ListItem.Subtitle style={{color:'gray', fontSize:11,}}>Teacher: {item.teacher?.name}</ListItem.Subtitle>
+                        </ListItem.Content>
+                    </ListItem>
+                    </View>
                     ))}
             </View>
 

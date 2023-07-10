@@ -7,54 +7,57 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 // import Icons from 'react-native-vector-icons/MaterialIcons';
 
 export default function ResultDisplay({ isVisible, onClose, text }) {
-  const { name, email, role, phone, fee_paid } = text || {}; // Destructure the properties from the text object, providing an empty object as the default value
+  const { name, email, role, phone, fee_paid, _id, specialty_id } = text || {}; // Destructure the properties from the text object, providing an empty object as the default value
 
   return (
     <Modal animationType="slide" transparent={true} visible={isVisible}>
       <View style={styles.modalContent}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Student Info</Text>
+          <Text style={styles.title}>STUDENT INFORMATION</Text>
           <Pressable onPress={onClose}>
             <MaterialIcons name="close" color="#fff" size={22} />
           </Pressable>
         </View>
         <View style={styles.content}>
-          <Text style={styles.contentTitle}>Verified <Icon name='verified' /></Text>
-          <Text styel={{ flexDirection: 'row' }}>
+          <Text style={styles.contentTitle}>{_id ? 'Verified' : "not verified"} <Icon name='verified' /></Text>
+          <Text style={{ flexDirection: 'row', fontWeight: '500', fontSize: 16, padding: 10, borderBottomColor: 'gray', borderBottomWidth: 1 }}>
             <Ionicons
-              name="person"
+              name="school-sharp"
               size={20}
               color="#326789"
               style={{ marginRight: 5, transform: [{ rotate: '2deg' }] }}
-            /> :
-            {name}
+            />  {name}
           </Text>
-          <Text styel={{ flexDirection: 'row' }}>
+          <Text style={{ flexDirection: 'row', padding: 5, }}>
             <Ionicons
-              name="mail"
-              size={20}
+              name="md-git-commit-outline"
+              size={15}
               color="#326789"
-              style={{ marginRight: 5, transform: [{ rotate: '2deg' }] }}
-            /> :
-            {email}
+              style={{ marginRight: 5, transform: [{ rotate: '360deg' }] }}
+            /> {specialty_id?.name}
           </Text>
-          <Text styel={{ flexDirection: 'row' }}>
+          <Text style={{ flexDirection: 'row', padding: 5, }}>
             <Ionicons
-              name="call"
-              size={20}
+              name="md-git-commit-outline"
+              size={15}
               color="#326789"
               style={{ marginRight: 5, transform: [{ rotate: '2deg' }] }}
-            /> :
-            {phone}
+            /> Level {specialty_id?.level}
+            <Ionicons
+              name="pin"
+              size={20}
+              color="#326789"
+              style={{ marginRight: 0, transform: [{ rotate: '2deg' }] }}
+            />{specialty_id?.total_fee} FCFA
           </Text>
-          <Text styel={{ flexDirection: 'row' }}>
+
+          <Text style={{ flexDirection: 'row', padding: 5, }}>
             <Ionicons
-              name="mail"
-              size={20}
+              name="md-git-commit-outline"
+              size={15}
               color="#326789"
-              style={{ marginRight: 5, transform: [{ rotate: '2deg' }] }}
-            /> :
-            {fee_paid} FCFA
+              style={{ marginTop: 25, transform: [{ rotate: '2deg' }] }}
+            /> Paid : {fee_paid} FCFA
           </Text>
           {/* <Text>{JSON.parse(text.name)}</Text> */}
         </View>
@@ -96,10 +99,10 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   content: {
-    padding: 20,
+    // padding: 20,
     alignContent: "center",
-    justifyContent:'center',
-    marginHorizontal:120,
+    justifyContent: 'center',
+    // marginHorizontal:120,
 
   },
   contentTitle: {
