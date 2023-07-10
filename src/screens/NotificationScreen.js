@@ -93,7 +93,7 @@ const Notification = ({navigation}) => {
                     {/* <Image source={backIcon} style={{ width: 20, height: 20 }} /> */}
                 </TouchableOpacity>
                 <Text style={styles.cardTitle}>Notifications</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Request')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Report')}>
                 <Ionicons
                     name="md-create"
                     size={25}

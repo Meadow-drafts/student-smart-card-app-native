@@ -10,6 +10,7 @@ import RegisterScreen from './src/screens/RegisterScreen'
 import AllSpecialtiesScreen from './src/screens/AllSpecialtiesScreen';
 import Notification from './src/screens/NotificationScreen'
 import RequestScreen from './src/screens/RequestScreen';
+import IncidentReportScreen from './src/screens/IncidentReportScreen';
 import {createStackNavigator} from '@react-navigation/stack'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -49,6 +50,7 @@ export default function App() {
           <Stack.Screen name="AllSpecialtiesScreen" component={AllSpecialtiesScreen} />
           <Stack.Screen name="Notification" component={Notification} />
           <Stack.Screen name="Request" component={RequestScreen} />
+          <Stack.Screen name="Report" component={IncidentReportScreen} />
 
         </Stack.Navigator>
       </NavigationContainer>

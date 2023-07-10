@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Button, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ListItem, Avatar, Input } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import CustomButton from '../components/CustomButton';
-import ViewIncidents from '../components/incidents/ViewIncidents'
-import ReportIncident from '../components/incidents/ReportIncident'
+// import ViewIncidents from '../components/incidents/ViewIncidents'
+// import ReportIncident from '../components/incidents/ReportIncident'
+import ViewIncidents from '../components/Incidents/ViewIncidents';
+import ReportIncident from '../components/Incidents/ReportIncident';
+import axios from  'axios'
 import Tabs from './tabs';
 
 const Announcements = [
@@ -32,46 +34,43 @@ const Announcements = [
 const tabs =["All incidents", "Report Incident"] ;
 
 
-const Item = ({ item }) => {
-    return (
-        <View style={styles.content}>
-            <ListItem bottomDivider>
-                <Avatar
-                    rounded
-                    icon={{
-                        name: 'person-outline',
-                        type: 'material',
-                        size: 26,
-                    }}
-                />
-                <ListItem.Content>
-                    <ListItem.Title>{item.title}</ListItem.Title>
-                    <ListItem.Subtitle style={{ fontSize: 13 }}>{item.content}</ListItem.Subtitle>
-                </ListItem.Content>
-            </ListItem>
-        </View>
-    )
-}
 
 const IncidentReportScreen = ({ navigation }) => {
     const [value, onChangeText] = useState('Useless Multiline Placeholder');
     const [activeTab, setActiveTab] = useState(tabs[0]);
 
-    const [selectedStartDate, setSelectedStartDate] = useState(null);
+    const [incidents, setIncidents] = useState([])
+    
+    const fetchIncidents = async () => {
+        try {
+            await axios.get('http://192.168.43.213:4000/incidents')
+                .then((response) => {
+                    // console.log(response)
+                    const result = response.data.data
+                    setIncidents(result)
+                    console.log(result)
+                })
+        } catch (error) {
+            console.log("error", error)
+        }
 
-    const onDateChange = (date) => {
-        setSelectedStartDate(date);
-    };
+    }
 
-    const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+    useEffect(() => {
+        fetchIncidents();
+        // getToken()
+        // fetchUsers();
+    }, []);
 
     const displayTabContent = ()=>{
         switch (activeTab){
             case "All incidents":
                 return (
                     <View style={styles.popularCards}>
+                        {incidents.map((item) =>(
+                    <ViewIncidents key={item._id} item={item} />
+                        ))}
                          
-                    <ViewIncidents />
                     </View>
                    
                 )
@@ -85,18 +84,7 @@ const IncidentReportScreen = ({ navigation }) => {
                        
                     )
                     break;
-                case "Level 3":
-                    return (
-                        <View style={styles.popularCards}>
-                              {specialties
-            ?.filter((specialty) => specialty.level === 3).map((specialty) => (
-                        <SpecialtyDetailsCard specialty={specialty} key={specialty._id}
-                        />
-                    ))}
-                        </View>
-                       
-                    )
-                break;
+           
         }
       }
 
@@ -129,32 +117,6 @@ const IncidentReportScreen = ({ navigation }) => {
                             {displayTabContent()}
                         </View>
 
-            <View style={styles.card}>
-
-                <Text style={{ textAlign: "center" }}>Do you wish to report an incident?</Text>
-                <View stye={{margin:100}}>
-                    <Input
-                        placeholder='Incident title'
-                    // leftIcon={{ type: 'font-awesome', name: 'chevron-left' }}
-                    />
-
-                    <Input
-                        placeholder="Narate incident"
-                        multiline={true}
-                        numberOfLines={4}
-                        leftIcon={{ type: 'font-awesome', name: 'comment' }}
-                        style={{ flexWrap: 'wrap' }}
-                    // style={styles}
-                    //    onChangeText={value => this.setState({ comment: value })}
-                    />
-                </View>
-
-                {/* <View style={{ flexDirection: "row", }}>
-                    <CustomButton />
-                    <CustomButton />
-                </View> */}
-
-            </View>
 
             <View >
             </View>

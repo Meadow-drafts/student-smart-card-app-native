@@ -26,29 +26,9 @@ import axios from 'axios'
 //     },
 // ]
 
-const Item = ({ item }) => {
 
-    const [incidents, setIncidents] = useState([])
-    
-    const fetchIncidents = async () => {
-        try {
-            await axios.get('http://192.168.43.213:4000/incidents')
-                .then((response) => {
-                    // console.log(response)
-                    const result = response.data.data
-                    setIncidents(result)
-                })
-        } catch (error) {
-            console.log("error", error)
-        }
+const ViewIncidents = ({navigation, item}) => {
 
-    }
-
-    useEffect(() => {
-        fetchIncidents();
-        // getToken()
-        // fetchUsers();
-    }, []);
     return (
         <View style={styles.content}>
             <ListItem bottomDivider>
@@ -61,64 +41,15 @@ const Item = ({ item }) => {
                 <ListItem.Content>
                     <ListItem.Title style={{ fontWeight: '700',}}>{item.title}</ListItem.Title>
                     <ListItem.Subtitle style={{fontSize: 12}}>{item.content}</ListItem.Subtitle>
-                    <Text style={{fontSize: 8,  marginTop: 7,color:'grey'}}>{item.date}</Text>
+                    <Text style={{fontSize: 8,  marginTop: 7,color:'grey', textAlign:'right'}}>{item.date.split('T')[0]}</Text>
                   
                 </ListItem.Content>
             </ListItem>
         </View>
     )
-}
-
-const ViewIncidents = ({navigation}) => {
-
-    const [selectedStartDate, setSelectedStartDate] = useState(null);
-
-    const onDateChange = (date) => {
-        setSelectedStartDate(date);
-    };
-
-    const startDate = selectedStartDate ? selectedStartDate.toString() : '';
-
-    return (
-        <View style={styles.container}>
-            <View style={styles.specialty}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 20, marginTop: 40 }}>
-                    <Ionicons
-                        name="md-chevron-back"
-                        size={28}
-                        color="#326789"
-                        style={{ marginRight: 5, transform: [{ rotate: '2deg' }] }}
-                    />
-                    {/* <Image source={backIcon} style={{ width: 20, height: 20 }} /> */}
-                </TouchableOpacity>
-                <Text style={styles.cardTitle}>Incidents</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Request')}>
-                <Ionicons
-                    name="md-create"
-                    size={25}
-                    color="#326789"
-                    style={{ marginRight: 15, marginTop: 40, transform: [{ rotate: '2deg' }] }}
-                />
-                </TouchableOpacity>
-                
-            </View>
-
-            <View style={styles.card}>
-
-                <Text>Incidents</Text>
-               
-                <FlatList
-                    data={incidents}
-                    renderItem={({ item }) => <Item item={item} />}
-                    keyExtractor={item => item.id}
-                />
-            </View>
-
-            <View >
-            </View>
-        </View>
-    );
 };
+
+
 
 const styles = StyleSheet.create({
     container: {

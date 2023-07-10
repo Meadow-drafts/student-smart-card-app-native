@@ -5,111 +5,68 @@ import { ListItem, Avatar, Input } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import CustomButton from '../components/CustomButton';
 
-const Announcements = [
-    {
-        id: 1,
-        title: "first announcement",
-        content: "A lot of things to tell you about ourfirst announcement lorem ipsun test text",
-        date: "2023/12/05",
-    },
-    {
-        id: 2,
-        title: "second announcement",
-        content: "A lot of things to tell you about our second announcement lorem ipsun test text",
-        date: "2022/12/05",
-    },
-    {
-        id: 3,
-        title: "third announcement",
-        content: "A lot of things to tell you about our third announcement lorem ipsun test text",
-        date: "2023/12/05",
-    },
-]
 
-const Item = ({ item }) => {
-    return (
-        <View style={styles.content}>
-            <ListItem bottomDivider>
-                <Avatar
-                    rounded
-                    icon={{
-                        name: 'person-outline',
-                        type: 'material',
-                        size: 26,
-                    }}
-                />
-                <ListItem.Content>
-                    <ListItem.Title>{item.title}</ListItem.Title>
-                    <ListItem.Subtitle style={{ fontSize: 13 }}>{item.content}</ListItem.Subtitle>
-                </ListItem.Content>
-            </ListItem>
-        </View>
-    )
-}
 
-const ReportIncident = ({ navigation }) => {
+
+const ReportIncident = () => {
     const [value, onChangeText] = useState('Useless Multiline Placeholder');
 
 
-    const [selectedStartDate, setSelectedStartDate] = useState(null);
+   return (
+    <View style={styles.container}>
+    <View style={styles.card}>
 
-    const onDateChange = (date) => {
-        setSelectedStartDate(date);
-    };
+        <View >
+            <Text style={{ textAlign: "center" }}>Do you wish to report an incident?</Text>
 
-    const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+            <Input
+                placeholder='Report title'
+                style={{ fontSize: 15, color: 'gray', marginTop: 10 }}
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.specialty}>
-                {/* <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 20, marginTop: 40 }}> */}
-                    {/* <Ionicons
-                        name="md-chevron-back"
-                        size={28}
-                        color="#326789"
-                        style={{ marginRight: 5, transform: [{ rotate: '2deg' }] }}
-                    /> */}
-                    {/* <Image source={backIcon} style={{ width: 20, height: 20 }} /> */}
-                {/* </TouchableOpacity> */}
-                {/* <Text style={styles.cardTitle}>Incident Report</Text>
-                <Ionicons
-                    name="ellipsis-horizontal"
-                    size={20}
-                    color="#326789"
-                    style={{ marginRight: 15, marginTop: 40, transform: [{ rotate: '2deg' }] }}
-                /> */}
-            </View>
+            // leftIcon={{ type: 'font-awesome', name: 'chevron-left' }}
+            />
 
-            <View style={styles.card}>
+            <Input
+                placeholder="Fill in report"
+                multiline={true}
+                numberOfLines={4}
+                leftIcon={{ type: 'font-awesome', name: 'comment' }}
+                style={{ flexWrap: 'wrap', fontSize: 15, color: 'gray' }}
+            // style={styles}
+            //    onChangeText={value => this.setState({ comment: value })}
+            />
 
-                <Text style={{ textAlign: "center" }}>Do you wish to report an incident?</Text>
-                <View stye={{margin:100}}>
-                    <Input
-                        placeholder='Incident title'
-                    // leftIcon={{ type: 'font-awesome', name: 'chevron-left' }}
-                    />
-
-                    <Input
-                        placeholder="Narate incident"
-                        multiline={true}
-                        numberOfLines={4}
-                        leftIcon={{ type: 'font-awesome', name: 'comment' }}
-                        style={{ flexWrap: 'wrap' }}
-                    // style={styles}
-                    //    onChangeText={value => this.setState({ comment: value })}
-                    />
-                </View>
-
-                {/* <View style={{ flexDirection: "row", }}>
-                    <CustomButton />
-                    <CustomButton />
-                </View> */}
-
-            </View>
-
-            <View >
-            </View>
+            <TouchableOpacity
+                //   onPress={onPress}
+                style={{
+                    backgroundColor: '#326789',
+                    padding: 20,
+                    borderRadius: 10,
+                    marginBottom: 30,
+                    // position:"absolute",
+                }}>
+                <Text
+                    style={{
+                        textAlign: 'center',
+                        fontWeight: '700',
+                        fontSize: 16,
+                        color: '#fff',
+                    }}>
+                    submit
+                </Text>
+            </TouchableOpacity>
         </View>
+
+        {/* <View style={{ flexDirection: "row", }}>
+            <CustomButton />
+            <CustomButton />
+        </View> */}
+
+    </View>
+
+    <View >
+    </View>
+</View>
     );
 };
 
