@@ -12,7 +12,7 @@ const TAB_BAR_HEIGHT = 49;
 export default function ScannerScreen() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [text, setText] = useState('Not yet scanned')
+  const [text, setText] = useState({})
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const askForCameraPermission = () => {
@@ -74,7 +74,7 @@ export default function ScannerScreen() {
             <BarcodeMask width={300} height={300} showAnimatedLine={false} edgeColor="#326789"/>
           </BarCodeScanner>
       </View>
-      <Text style={styles.maintext}>{text}</Text>
+      <Text style={styles.maintext}>{!scanned && 'Not scanned yet'}</Text>
       <CustomButton label={"Scan Code"} onPress={() => setIsModalVisible(true)} />
 
       {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}

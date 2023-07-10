@@ -16,7 +16,7 @@ const AttendanceScreen = () => {
     // Render the calendar component
     return (
         <View style={styles.container}>
-            <Text>Daily Attendance</Text>
+            <Text style={{color:'#326789', fontSize:16, fontWeight:'700', textAlign:'center', marginBottom:15, borderBottomColor:"#326789", borderBottomWidth: 1}}>Daily Attendance</Text>
           <TableComponent/>
         </View>
       );
