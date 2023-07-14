@@ -12,6 +12,7 @@ import WelcomePage from '../components/WelcomePage';
 import AttendanceScreen from './AttendanceScreen'
 import TimeTableScreen from './TimeTableScreen'
 import WeeklyCalendar from '../components/WeekCalendar';
+import useNotifications from '../hooks/useNotifications';
 
 const tabs = [
     {

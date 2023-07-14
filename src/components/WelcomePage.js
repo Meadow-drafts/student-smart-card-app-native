@@ -50,13 +50,16 @@ export default function WelcomePage({ navigation }) {
   // get the token
   async function getToken() {
     try {
-      let userDetails = await AsyncStorage.getItem('userInfo');
-      // console.log("user info is" + userDetails);
-      setUser(userDetails)
+    let userDetails = await AsyncStorage.getItem('userInfo');
+    console.log("user info is" + userDetails);
+    console.log(userDetails.email)
+    const details = JSON.parse(userDetails)
+    setUser(details.user)
+    console.log(user)
     } catch (error) {
-      console.log("error while getting token", error);
+    console.log("error while getting token",error);
     }
-  }
+}
 
   useEffect(() => {
     fetchSpecialties();
@@ -82,8 +85,8 @@ export default function WelcomePage({ navigation }) {
             }}
             containerStyle={{ position: 'absolute', top: -40 }}
           />
-          <Text style={styles.userName}>Hi, Jane Doe</Text>
-          <Text style={styles.welcomeMessage}>Lorem ipsum test text</Text>
+          <Text style={styles.userName}>Hi, {user.username}</Text>
+          <Text style={styles.welcomeMessage}>Let's get going..</Text>
         </View>
       </ImageBackground>
       <View style={styles.team}>

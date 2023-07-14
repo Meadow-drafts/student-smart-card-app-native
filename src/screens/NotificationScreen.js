@@ -4,6 +4,8 @@ import CalendarPicker from 'react-native-calendar-picker';
 import { ListItem, Avatar } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios'
+import {scheduleNotification, cancelAllLocalNotifications} from '../hooks/localNotifications'
+
 
 // const Announcements = [
 //     {
@@ -94,6 +96,7 @@ const Notification = ({navigation}) => {
                 </TouchableOpacity>
                 <Text style={styles.cardTitle}>Notifications</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Report')}>
+                {/* <TouchableOpacity onPress={() => navigation.navigate('Request')}> */}
                 <Ionicons
                     name="md-create"
                     size={25}

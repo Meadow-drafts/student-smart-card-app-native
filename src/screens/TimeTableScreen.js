@@ -74,7 +74,7 @@ const TmeTableScreen = () => {
             />
 
             <View>
-                <Text>SELECTED DATE: {startDate}</Text>
+                {/* <Text>SELECTED DATE: {startDate}</Text> */}
 
             </View>
             <View style={styles.card}>

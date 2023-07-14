@@ -88,11 +88,11 @@ const LoginScreen = ({navigation}) => {
             <Text
             style={{
                 // fontFamily: 'Roboto-Medium',
-                fontSize: 10,
-                fontWeight: '500',
+                fontSize: 20,
+                fontWeight: '700',
                 color: '#333',
                 marginBottom: 10,
-              }}>Ace-Up</Text>
+              }}>Welcome to CardSphere! Let's get started</Text>
          
         </View>
 
@@ -185,7 +185,10 @@ const LoginScreen = ({navigation}) => {
           }}>
         
         </View>
-
+        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+          <Text style={{ color: '#78a6c8', fontWeight: '700' }}> HomeScreen</Text>
+        </TouchableOpacity>
+{/* 
         <View
           style={{
             flexDirection: 'row',
@@ -196,7 +199,7 @@ const LoginScreen = ({navigation}) => {
           <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
             <Text style={{color: '#78a6c8', fontWeight: '700'}}> Register</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
   );

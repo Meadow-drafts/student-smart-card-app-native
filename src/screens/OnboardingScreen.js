@@ -19,7 +19,7 @@ const slides = [
   {
     id: '1',
     image: require('../images/card.png'),
-    title: 'Best Digital Solution with Ace-Up',
+    title: 'Best Digital Solution with CardSphere',
     subtitle: 'You can best manage institute and student information digitally.',
   },
   {

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "925972659085",
+    "project_id": "school-app-356ac",
+    "storage_bucket": "school-app-356ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925972659085:android:ef1085aeaac3b3cd3c5bc4",
+        "android_client_info": {
+          "package_name": "com.shirley.school_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925972659085-719sklqg01rtuphq1itbks60emep8ljk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQ9j_qTyLJUl-nKC7zyLg-KGUc8TqQh-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925972659085-719sklqg01rtuphq1itbks60emep8ljk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

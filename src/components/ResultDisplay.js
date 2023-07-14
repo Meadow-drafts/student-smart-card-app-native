@@ -1,4 +1,4 @@
-import { Modal, View, Text, Pressable, StyleSheet, } from 'react-native';
+import { Modal, View, Text, Pressable, StyleSheet,TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -61,6 +61,27 @@ export default function ResultDisplay({ isVisible, onClose, text }) {
           </Text>
           {/* <Text>{JSON.parse(text.name)}</Text> */}
         </View>
+        {/* <TouchableOpacity
+                //   onPress={onPress}
+                style={{
+                    backgroundColor: '#326789',
+                    padding: 10,
+                    borderRadius: 10,
+                    marginBottom: 30,
+                    width: 100,
+                    marginLeft:300,
+                    // position:"absolute",
+                }}>
+                <Text
+                    style={{
+                        textAlign: 'center',
+                        fontWeight: '700',
+                        fontSize: 16,
+                        color: '#fff',
+                    }}>
+                    present
+                </Text>
+            </TouchableOpacity> */}
 
       </View>
     </Modal>

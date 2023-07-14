@@ -11,8 +11,10 @@ import AllSpecialtiesScreen from './src/screens/AllSpecialtiesScreen';
 import Notification from './src/screens/NotificationScreen'
 import RequestScreen from './src/screens/RequestScreen';
 import IncidentReportScreen from './src/screens/IncidentReportScreen';
+import useNotifications from './src/hooks/useNotifications';
 import {createStackNavigator} from '@react-navigation/stack'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Notifications from 'expo'
 
 const Stack = createStackNavigator()
 export default function App() {
@@ -32,6 +34,10 @@ export default function App() {
     }
 
     fetchAppData()
+    
+  },[])
+  useEffect(()=>{
+  
   },[])
 
   return (
