@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
 import { Raleway_500Medium, useFonts } from '@expo-google-fonts/raleway'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -13,6 +13,9 @@ import AttendanceScreen from './AttendanceScreen'
 import TimeTableScreen from './TimeTableScreen'
 import WeeklyCalendar from '../components/WeekCalendar';
 import useNotifications from '../hooks/useNotifications';
+import TimerNotification from './testnotification'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 const tabs = [
     {
@@ -97,6 +100,23 @@ function ThirdScreen() {
 const Tab = createBottomTabNavigator()
 
 const HomeScreen = () => {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+      getToken();
+    }, []);
+  
+    const getToken = async () => {
+      try {
+        let userDetails = await AsyncStorage.getItem('userInfo');
+        const details = JSON.parse(userDetails);
+        setUser(details.user);
+      } catch (error) {
+        console.log("Error while getting token", error);
+      }
+    };
+  
+    
     const [fontsLoaded] = useFonts({
         raleway: Raleway_500Medium
     })
@@ -104,23 +124,47 @@ const HomeScreen = () => {
         <Text>Loading</Text>;
         return null;
     }
-    return (
-            <Tab.Navigator screenOptions={({ route }) => ({
-                tabBarIcon: ({ color }) => screenOptions(route, color),
-                headerShown: false,
-                tabBarActiveTintColor: "#326789",
-                tabBarInactiveTintColor: "#46474a",
-                tabBarStyle: {
-                    elevation: 0,
-                }
-            })}>
-                <Tab.Screen name="Home" component={WelcomePage} />
-                <Tab.Screen name="TimeTable" component={TimeTableScreen} />
-                <Tab.Screen name="Scanner" component={ScannerScreen} />
-                <Tab.Screen name="Attendance" component={AttendanceScreen} />
-                <Tab.Screen name="Profile" component={UserProfile} />
-            </Tab.Navigator>
-    )
+    if (user && user.role === 'delegate') {
+        return (
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ color }) => screenOptions(route, color),
+              headerShown: false,
+              tabBarActiveTintColor: "#326789",
+              tabBarInactiveTintColor: "#46474a",
+              tabBarStyle: {
+                elevation: 0,
+              }
+            })}
+          >
+            <Tab.Screen name="Home" component={WelcomePage} />
+            <Tab.Screen name="TimeTable" component={TimeTableScreen} />
+            <Tab.Screen name="Attendance" component={AttendanceScreen} />
+            <Tab.Screen name="Scanner" component={ScannerScreen} />
+            <Tab.Screen name="Profile" component={UserProfile} />
+          </Tab.Navigator>
+        );
+      } else if (user && user.role === 'security') {
+        return (
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ color }) => screenOptions(route, color),
+              headerShown: false,
+              tabBarActiveTintColor: "#326789",
+              tabBarInactiveTintColor: "#46474a",
+              tabBarStyle: {
+                elevation: 0,
+              }
+            })}
+          >
+            <Tab.Screen name="Home" component={WelcomePage} />
+            <Tab.Screen name="Scanner" component={ScannerScreen} />
+            <Tab.Screen name="Profile" component={UserProfile} />
+          </Tab.Navigator>
+        );
+      } else {
+        return null; // or handle the case when user or user.role is undefined or does not match any conditions
+      }
     //tab-based navigation
 
 };

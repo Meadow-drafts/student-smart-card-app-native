@@ -15,6 +15,7 @@ import useNotifications from './src/hooks/useNotifications';
 import {createStackNavigator} from '@react-navigation/stack'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Notifications from 'expo'
+import AnnouncementNotificationService from './src/services/AnnouncementNotificationService';
 
 const Stack = createStackNavigator()
 export default function App() {
@@ -43,12 +44,11 @@ export default function App() {
   return (
     isAppFirstLaunched != null && (
       <NavigationContainer>
+        <AnnouncementNotificationService/>
+
         <Stack.Navigator screenOptions={{headerShown: false}}>
           {isAppFirstLaunched && (
-            <Stack.Screen
-              name="OnboardingScreen"
-              component={OnboardingScreen}
-            />
+            <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
           )}
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
@@ -57,7 +57,6 @@ export default function App() {
           <Stack.Screen name="Notification" component={Notification} />
           <Stack.Screen name="Request" component={RequestScreen} />
           <Stack.Screen name="Report" component={IncidentReportScreen} />
-
         </Stack.Navigator>
       </NavigationContainer>
     )

@@ -52,7 +52,8 @@
     "react-navigation": "^4.4.4",
     "rn-bottom-drawer": "^1.4.3",
     "expo-notifications": "~0.18.1",
-    "expo-device": "~5.2.1"
+    "expo-device": "~5.2.1",
+    "expo-constants": "~14.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

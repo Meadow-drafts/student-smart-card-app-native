@@ -2,7 +2,7 @@ import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
 
-const scheduleLocalNotification = async (title, body, trigger) => {
+export const scheduleLocalNotification = async (title, body, trigger) => {
     await Notifications.scheduleNotificationAsync({
       content: {
         title,
@@ -14,7 +14,7 @@ const scheduleLocalNotification = async (title, body, trigger) => {
   
 
 
-  const cancelAllLocalNotifications = async () => {
+  export const cancelAllLocalNotifications = async () => {
     await Notifications.cancelAllScheduledNotificationsAsync();
   };
   

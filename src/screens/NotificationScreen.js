@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import { Button, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ListItem, Avatar } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios'
-import {scheduleNotification, cancelAllLocalNotifications} from '../hooks/localNotifications'
+import * as Notifications from 'expo-notifications';
+
 
 
 // const Announcements = [
@@ -55,6 +56,8 @@ const Notification = ({navigation}) => {
 
     const [selectedStartDate, setSelectedStartDate] = useState(null);
     const [announcements, setAnnouncemnets] = useState([])
+    // const previousAnnouncementsRef = useRef([]);
+     
     
     const fetchAnnouncements = async () => {
         try {
@@ -63,6 +66,7 @@ const Notification = ({navigation}) => {
                     // console.log(response)
                     const result = response.data.data
                     setAnnouncemnets(result)
+                  
                 })
         } catch (error) {
             console.log("error", error)
@@ -72,9 +76,45 @@ const Notification = ({navigation}) => {
 
     useEffect(() => {
         fetchAnnouncements();
-        // getToken()
-        // fetchUsers();
-    }, []);
+        // askNotification();
+    
+        // const interval = setInterval(() => {
+        //   checkAnnouncementLength();
+        // }, 1000 * 10); // Check every 10 seconds
+        // console.log("checking");
+        // return () => clearInterval(interval);
+      }, []);
+    
+
+    // const checkAnnouncementLength = () => {
+    //     if (previousAnnouncementsRef.current.length < announcements.length) {
+    //       const newAnnouncement = announcements[announcements.length - 1];
+    //       sendLocalNotification(newAnnouncement);
+    //     }
+    
+    //     previousAnnouncementsRef.current = [...announcements];
+    //   };
+
+    // const sendLocalNotification = (announcement) => {
+    //     const notificationContent = {
+    //       title: 'New Announcement',
+    //       body: "one",
+    //       sound: true,
+    //     };
+    
+    //     Notifications.scheduleNotificationAsync({
+    //       content: notificationContent,
+    //       trigger: null, // Send immediately
+    //     });
+    //   };
+
+    // const askNotification = async () => {
+    //     const { status } = await Notifications.requestPermissionsAsync();
+    //     if (status === 'granted') {
+    //       console.log('Notification permissions granted.');
+    //     }
+    //   };
+    
 
     const onDateChange = (date) => {
         setSelectedStartDate(date);
