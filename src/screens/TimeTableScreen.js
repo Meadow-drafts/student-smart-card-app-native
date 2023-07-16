@@ -10,6 +10,7 @@ import Period from '../components/timetables/Period';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ListItem, Avatar } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const TmeTableScreen = () => {
@@ -64,6 +65,7 @@ const TmeTableScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={{color:'#326789', fontSize:16, fontWeight:'700', textAlign:'center', marginBottom:15, borderBottomColor:"#326789", borderBottomWidth: 1}}>Time Table</Text>
+            <ScrollView>
             <CalendarPicker
                 onDateChange={onDateChange}
                 height={350}
@@ -101,9 +103,10 @@ const TmeTableScreen = () => {
                     </View>
                     ))}
             </View>
+            </ScrollView>
+           
 
-            <View >
-            </View>
+           
         </View>
     );
 };
@@ -123,7 +126,7 @@ const styles = StyleSheet.create({
     content: {
         // backgroundColor: "#78a6c8",
         // borderRadius: 12,
-        padding: 6,
+        // padding: 6,
         marginHorizontal: 20,
         borderLeftColor: "#326789",
         borderLeftWidth: 3,

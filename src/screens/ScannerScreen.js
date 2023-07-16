@@ -5,6 +5,8 @@ import BarcodeMask from 'react-native-barcode-mask';
 import CustomButton from '../components/CustomButton';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import ResultDisplay from '../components/ResultDisplay';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 
 const TAB_BAR_HEIGHT = 49;
@@ -14,6 +16,21 @@ export default function ScannerScreen() {
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState({})
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const getToken = async () => {
+    try {
+      let userDetails = await AsyncStorage.getItem('userInfo');
+      const details = JSON.parse(userDetails);
+      setUser(details.user);
+      console.log(user.role)
+    } catch (error) {
+      console.log("Error while getting token", error);
+    }
+  };    
+  useEffect(() => {
+      getToken();
+    }, []);
 
   const askForCameraPermission = () => {
     (async () => {

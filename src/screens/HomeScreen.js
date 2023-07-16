@@ -57,7 +57,7 @@ const screenOptions = (route, color) => {
             iconName = 'qrcode';
             break;
         case 'Attendance':
-            iconName = 'table';
+            iconName = 'th-list';
             break;
         case 'TimeTable':
             iconName = 'table';
@@ -139,8 +139,8 @@ const HomeScreen = () => {
           >
             <Tab.Screen name="Home" component={WelcomePage} />
             <Tab.Screen name="TimeTable" component={TimeTableScreen} />
-            <Tab.Screen name="Attendance" component={AttendanceScreen} />
             <Tab.Screen name="Scanner" component={ScannerScreen} />
+            <Tab.Screen name="Attendance" component={AttendanceScreen} />
             <Tab.Screen name="Profile" component={UserProfile} />
           </Tab.Navigator>
         );

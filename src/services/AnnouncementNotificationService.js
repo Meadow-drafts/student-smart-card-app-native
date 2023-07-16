@@ -5,97 +5,76 @@ import axios from 'axios';
 
 const AnnouncementNotificationService = () => {
   const [previousAnnouncement, setPreviousAnnouncement] = useState(null);
+  const [announcements, setAnnouncements] = useState([]);
+  const notificationRef = useRef();
 
   useEffect(() => {
-    let notificationSubscription;
-    let checkAnnouncementsTimer;
-
-    // Function to fetch announcements and check for new ones
-    const fetchAndCheckAnnouncements = async () => {
+    const fetchAnnouncements = async () => {
       try {
         const response = await axios.get('http://192.168.43.213:4000/announcements');
-        const announcements = response.data;
-
-
-        if (announcements.length > 0) {
-          const lastAnnouncement = announcements[announcements.length - 1];
-
-          // Compare with previous announcement
-          if (JSON.stringify(lastAnnouncement) !== JSON.stringify(previousAnnouncement)) {
-            // Send notification with the last announcement
-            sendNotification(lastAnnouncement);
-          }
-
-          // Update previous announcement
-          setPreviousAnnouncement(lastAnnouncement);
-        }
+        const result = response.data.data;
+        setAnnouncements(result);
+        console.log(result);
       } catch (error) {
-        console.log('Error fetching announcements:', error);
+        console.log("error", error);
       }
     };
 
-    // Function to send a notification
-    const sendNotification = (announcement) => {
-      const { title, content } = announcement;
-
-      // Configure the notification
-      const notificationContent = {
-        title: title,
-        body: content,
-        sound: true,
-        priority: Notifications.AndroidNotificationPriority.HIGH,
-        color: 'blue',
-      };
-
-      // Schedule the notification
-      Notifications.scheduleNotificationAsync({
-        content: notificationContent,
-        trigger: null, // Send immediately
-      });
-    };
-
-    // Handle app state changes
-    const handleAppStateChange = (nextAppState) => {
-      if (nextAppState === 'active') {
-        // App has come to the foreground, fetch and check announcements
-        fetchAndCheckAnnouncements();
-        console.log('checking3');
-
+    const registerForPushNotifications = async () => {
+      // Request permission to send notifications
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Notification permission not granted');
+        return;
       }
     };
 
-    // Set up the notification handler
-    const setupNotifications = async () => {
-      await Notifications.requestPermissionsAsync();
-      notificationSubscription = Notifications.addNotificationReceivedListener(handleNotification);
+    fetchAnnouncements();
+    registerForPushNotifications();
+  }, []);
+
+  useEffect(() => {
+    const checkNewAnnouncement = () => {
+      const interval = setInterval(async () => {
+        try {
+          const response = await axios.get('http://192.168.43.213:4000/announcements');
+          const result = response.data.data;
+          if (result.length > 0) {
+            const latestAnnouncement = result[result.length - 1];
+            if (
+              previousAnnouncement &&
+              latestAnnouncement.id !== previousAnnouncement.id
+            ) {
+              sendNotification(latestAnnouncement);
+            }
+            setPreviousAnnouncement(latestAnnouncement);
+          }
+        } catch (error) {
+          console.log("error", error);
+        }
+      }, 5000); // Check every 5 seconds
+
+      return () => clearInterval(interval);
     };
 
-    // Handle incoming notifications when app is in foreground
-    const handleNotification = (notification) => {
-      // Do something with the received notification if needed
-      console.log('Received notification:', notification);
-    };
+    checkNewAnnouncement();
+  }, []);
 
-    // Subscribe to app state changes
-    AppState.addEventListener('change', handleAppStateChange);
+  const sendNotification = (announcement) => {
+    notificationRef.current = Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'New Announcement',
+        body: announcement.content,
+      },
+      trigger: null,
+    });
+  };
 
-    // Set up notifications and start checking for announcements
-    setupNotifications();
-    fetchAndCheckAnnouncements();
-
-    // Set the timer to check for new announcements every 10 seconds
-    checkAnnouncementsTimer = setInterval(fetchAndCheckAnnouncements, 10000);
-    // console.log('checking')
-
-
-    // Clean up event listeners and timers
+  useEffect(() => {
     return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
-      if (notificationSubscription) {
-        notificationSubscription.remove();
+      if (notificationRef.current) {
+        Notifications.cancelScheduledNotificationAsync(notificationRef.current);
       }
-    //   console.log('checking')
-      clearInterval(checkAnnouncementsTimer);
     };
   }, []);
 

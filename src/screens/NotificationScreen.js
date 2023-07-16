@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef  } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
+import {ScrollView, Button, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ListItem, Avatar } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios'
 import * as Notifications from 'expo-notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 
 
@@ -44,7 +46,7 @@ const Item = ({ item }) => {
                 <ListItem.Content>
                     <ListItem.Title style={{ fontWeight: '700',}}>{item.title}</ListItem.Title>
                     <ListItem.Subtitle style={{fontSize: 12}}>{item.content}</ListItem.Subtitle>
-                    <Text style={{fontSize: 8,  marginTop: 7,color:'grey'}}>{item.date}</Text>
+                    <Text style={{fontSize: 8,  marginTop: 7,color:'grey'}}>{item.date.split('T')}</Text>
                   
                 </ListItem.Content>
             </ListItem>
@@ -56,6 +58,8 @@ const Notification = ({navigation}) => {
 
     const [selectedStartDate, setSelectedStartDate] = useState(null);
     const [announcements, setAnnouncemnets] = useState([])
+    const [user, setUser] = useState(null);
+
     // const previousAnnouncementsRef = useRef([]);
      
     
@@ -76,45 +80,29 @@ const Notification = ({navigation}) => {
 
     useEffect(() => {
         fetchAnnouncements();
-        // askNotification();
+        }, []);       
+      
+        const getToken = async () => {
+          try {
+            let userDetails = await AsyncStorage.getItem('userInfo');
+            const details = JSON.parse(userDetails);
+            setUser(details.user);
+            console.log(user.role)
+          } catch (error) {
+            console.log("Error while getting token", error);
+          }
+        };    
+        useEffect(() => {
+            getToken();
+          }, []);
     
-        // const interval = setInterval(() => {
-        //   checkAnnouncementLength();
-        // }, 1000 * 10); // Check every 10 seconds
-        // console.log("checking");
-        // return () => clearInterval(interval);
-      }, []);
-    
-
-    // const checkAnnouncementLength = () => {
-    //     if (previousAnnouncementsRef.current.length < announcements.length) {
-    //       const newAnnouncement = announcements[announcements.length - 1];
-    //       sendLocalNotification(newAnnouncement);
-    //     }
-    
-    //     previousAnnouncementsRef.current = [...announcements];
-    //   };
-
-    // const sendLocalNotification = (announcement) => {
-    //     const notificationContent = {
-    //       title: 'New Announcement',
-    //       body: "one",
-    //       sound: true,
-    //     };
-    
-    //     Notifications.scheduleNotificationAsync({
-    //       content: notificationContent,
-    //       trigger: null, // Send immediately
-    //     });
-    //   };
-
-    // const askNotification = async () => {
-    //     const { status } = await Notifications.requestPermissionsAsync();
-    //     if (status === 'granted') {
-    //       console.log('Notification permissions granted.');
-    //     }
-    //   };
-    
+          const handlePress = () => {
+            if (user.role === 'security') {
+              navigation.navigate('Report');
+            } else if (user.role === 'delegate') {
+              navigation.navigate('Request');
+            }
+          };
 
     const onDateChange = (date) => {
         setSelectedStartDate(date);
@@ -135,7 +123,7 @@ const Notification = ({navigation}) => {
                     {/* <Image source={backIcon} style={{ width: 20, height: 20 }} /> */}
                 </TouchableOpacity>
                 <Text style={styles.cardTitle}>Notifications</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Report')}>
+                <TouchableOpacity onPress={handlePress}>
                 {/* <TouchableOpacity onPress={() => navigation.navigate('Request')}> */}
                 <Ionicons
                     name="md-create"
@@ -147,13 +135,13 @@ const Notification = ({navigation}) => {
                 
             </View>
 
-            <View style={styles.card}>            
+            <ScrollView style={styles.card}>            
                 <FlatList
                     data={announcements}
                     renderItem={({ item }) => <Item item={item} />}
                     keyExtractor={item => item._id}
                 />
-            </View>
+            </ScrollView>
 
             <View >
             </View>

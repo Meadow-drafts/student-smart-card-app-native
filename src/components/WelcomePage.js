@@ -12,7 +12,7 @@ import value from '../images/value.png'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
-const image = require('../images/value.png');
+const image = require('../images/second-bkg.png');
 const API_URL = "http://localhost:400"
 export default function WelcomePage({ navigation }) {
   const [specialties, setSpecialties] = useState([])
@@ -70,11 +70,16 @@ export default function WelcomePage({ navigation }) {
   // Return the View
   return (
     // onPress={() => navigation.navigate('HomeScreen')}
+<>
+{/* <ImageBackground source={image} resizeMode='cover' >
+<ProfileHeader onProfilePicPress={() => navigation.navigate('Profile')} disableFirstIcon={true} disableSecondIcon={true} onThirdIconPress={() => navigation.navigate('Notification')} leftAlignedButtonImageSource={value} style={{height:60, }} />
 
-    <ScrollView style={styles.container}>
+</ImageBackground> */}
 
-      <ImageBackground source={image} resizeMode="contain" style={styles.image} >
-        <ProfileHeader onProfilePicPress={() => navigation.navigate('Profile')} disableFirstIcon={true} disableSecondIcon={true} onThirdIconPress={() => navigation.navigate('Notification')} leftAlignedButtonImageSource={value} />
+<View stickyHeaderIndices={[2]} style={styles.container}>
+      <ImageBackground source={image} resizeMode="cover" style={styles.image} >
+      <ProfileHeader stickyHeaderIndices={[2]} onProfilePicPress={() => navigation.navigate('Profile')} disableFirstIcon={true} disableSecondIcon={true} onThirdIconPress={() => navigation.navigate('Notification')} leftAlignedButtonImageSource={value} style={{height:60, backgroundColor:"transparent"}} />
+
         <View style={[styles.card, styles.elevation]}>
           <Avatar
             rounded
@@ -89,6 +94,7 @@ export default function WelcomePage({ navigation }) {
           <Text style={styles.welcomeMessage}>Let's get going..</Text>
         </View>
       </ImageBackground>
+      <ScrollView bounces={false} >
       <View style={styles.team}>
         <Text style={styles.cardTitle}>Team</Text>
         <View style={styles.teamCards}>
@@ -119,23 +125,31 @@ export default function WelcomePage({ navigation }) {
           ))}
         </View>
       </View>
+      </ScrollView>
+      
 
 
 
-    </ScrollView>
+    </View>
+</>
+    
   );
 }
+{/* */}
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    paddingTop: StatusBar.currentHeight,
+    // paddingTop: StatusBar.currentHeight,
     // marginTop: 10,
 
   },
   image: {
-    marginTop: 10
+    // marginTop: 10,
+    padding:10,
+    backgroundSize: "contain"
   },
 
   userName: {

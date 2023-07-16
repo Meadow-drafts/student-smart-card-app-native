@@ -1,6 +1,10 @@
+import React, { useState, useEffect } from 'react';
+
 import { Modal, View, Text, Pressable, StyleSheet,TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -8,6 +12,37 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default function ResultDisplay({ isVisible, onClose, text }) {
   const { name, email, role, phone, fee_paid, _id, specialty_id } = text || {}; // Destructure the properties from the text object, providing an empty object as the default value
+
+  const [user, setUser] = useState(null);
+
+  const getToken = async () => {
+    try {
+      let userDetails = await AsyncStorage.getItem('userInfo');
+      const details = JSON.parse(userDetails);
+      setUser(details.user);
+      console.log(user.role)
+    } catch (error) {
+      console.log("Error while getting token", error);
+    }
+  };    
+  useEffect(() => {
+      getToken();
+    }, []);
+
+    const renderPresentButton = () => {
+      if (user?.role === 'delegate') {
+        return (
+          <TouchableOpacity
+            style={styles.presentButton}
+            onPress={() => console.log('Present button pressed')}
+          >
+            <Text style={styles.presentButtonText}>Present</Text>
+          </TouchableOpacity>
+        );
+      }
+      return null;
+    };
+    
 
   return (
     <Modal animationType="slide" transparent={true} visible={isVisible}>
@@ -61,27 +96,9 @@ export default function ResultDisplay({ isVisible, onClose, text }) {
           </Text>
           {/* <Text>{JSON.parse(text.name)}</Text> */}
         </View>
-        {/* <TouchableOpacity
-                //   onPress={onPress}
-                style={{
-                    backgroundColor: '#326789',
-                    padding: 10,
-                    borderRadius: 10,
-                    marginBottom: 30,
-                    width: 100,
-                    marginLeft:300,
-                    // position:"absolute",
-                }}>
-                <Text
-                    style={{
-                        textAlign: 'center',
-                        fontWeight: '700',
-                        fontSize: 16,
-                        color: '#fff',
-                    }}>
-                    present
-                </Text>
-            </TouchableOpacity> */}
+      
+       {/*present button  */}
+       {renderPresentButton()}       
 
       </View>
     </Modal>
@@ -131,6 +148,20 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     textAlign: "center",
 
-  }
+  },
+  presentButton: {
+    backgroundColor: '#326789',
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 30,
+    width: 100,
+    alignSelf: 'center',
+  },
+  presentButtonText: {
+    textAlign: 'center',
+    fontWeight: '700',
+    fontSize: 16,
+    color: '#fff',
+  },
 });
 

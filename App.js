@@ -1,6 +1,6 @@
 import React,{useEffect} from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View , ActivityIndicator} from 'react-native';
 import 'react-native-gesture-handler'
 import {NavigationContainer} from '@react-navigation/native'
 import HomeScreen from './src/screens/HomeScreen';
@@ -20,8 +20,32 @@ import AnnouncementNotificationService from './src/services/AnnouncementNotifica
 const Stack = createStackNavigator()
 export default function App() {
   const [isAppFirstLaunched, setIsAppFirstLaunched] = React.useState(null);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
 
+
+
+   // get the token
+   async function getToken() {
+    try {
+    let userDetails = await AsyncStorage.getItem('userInfo');
+    const details = JSON.parse(userDetails)
+    let token = details.accessToken
+    if(token){
+      setIsAuthenticated(true)
+    }
+    } catch (error) {
+    console.log("error while getting token",error);
+    }
+    setIsLoading(false);
+}
+
+useEffect(()=>{
+  // fetchSpecialties();
+  getToken()
+  // fetchUsers();
+},[]);
  
   useEffect (()=> {
     async function fetchAppData (){
@@ -39,24 +63,50 @@ export default function App() {
   },[])
   useEffect(()=>{
   
-  },[])
+  },[]);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
 
   return (
     isAppFirstLaunched != null && (
       <NavigationContainer>
-        <AnnouncementNotificationService/>
+        {/* <AnnouncementNotificationService/> */}
 
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          {isAppFirstLaunched && (
-            <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
-          )}
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="AllSpecialtiesScreen" component={AllSpecialtiesScreen} />
-          <Stack.Screen name="Notification" component={Notification} />
-          <Stack.Screen name="Request" component={RequestScreen} />
-          <Stack.Screen name="Report" component={IncidentReportScreen} />
+        {isAppFirstLaunched ? (
+          <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
+        ) : (
+          <>
+            {isAuthenticated ? (
+              <>
+                <Stack.Screen name="HomeScreen" component={HomeScreen} />
+                <Stack.Screen
+                  name="AllSpecialtiesScreen"
+                  component={AllSpecialtiesScreen}
+                />
+                <Stack.Screen name="Notification" component={Notification} />
+                <Stack.Screen name="Request" component={RequestScreen} />
+                <Stack.Screen name="Report" component={IncidentReportScreen} />
+              </>
+            ) : (
+              <>
+                <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                <Stack.Screen
+                  name="RegisterScreen"
+                  component={RegisterScreen}
+                />
+              </>
+            )}
+          </>
+        )}
+         
         </Stack.Navigator>
       </NavigationContainer>
     )
