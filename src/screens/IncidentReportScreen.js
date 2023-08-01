@@ -79,7 +79,7 @@ const IncidentReportScreen = ({ navigation }) => {
                     return (
                         <View style={styles.popularCards}>
                         
-                        <ReportIncident />
+                        <ReportIncident fetchIncidents={fetchIncidents} />
                         </View>
                        
                     )

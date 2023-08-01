@@ -31,10 +31,10 @@ const Item = ({ item }) => {
 
 const SendRequest = ({ navigation, fetchIncidents }) => {
     const [value, onChangeText] = useState('Useless Multiline Placeholder');
-    const [userSpecialty, setUserSpecialty]= useState('')
+    const [userSpecialty, setUserSpecialty] = useState('')
     const [user, setUser] = useState('');
     const [title, setTitle] = useState('');
-    const[content, setContent] = useState('')
+    const [content, setContent] = useState('')
 
 
     const [selectedStartDate, setSelectedStartDate] = useState(null);
@@ -45,58 +45,58 @@ const SendRequest = ({ navigation, fetchIncidents }) => {
 
     const startDate = selectedStartDate ? selectedStartDate.toString() : '';
 
-     // get the token
-     async function getToken() {
+    // get the token
+    async function getToken() {
         try {
-        let userDetails = await AsyncStorage.getItem('userInfo');
-        // console.log("user info is" + userDetails);
-        const details = JSON.parse(userDetails)
-        console.log('specialty info',details.user);
-        setUserSpecialty(details.user.specialty._id)
-        setUser(details.user._id)
-        console.log("n",userSpecialty)
+            let userDetails = await AsyncStorage.getItem('userInfo');
+            // console.log("user info is" + userDetails);
+            const details = JSON.parse(userDetails)
+            console.log('specialty info', details.user);
+            setUserSpecialty(details.user.specialty._id)
+            setUser(details.user._id)
+            console.log("n", userSpecialty)
         } catch (error) {
-        console.log("error while getting token",error);
+            console.log("error while getting token", error);
         }
     }
 
-      // Define a function to handle the form submission
-  const handleSubmit = async () => {
-    console.log(title)
-    console.log(content)
-    console.log(userSpecialty)
-    console.log(user)
-    // Validate the input fields
-    if (!title || !content) {
-      // Show an alert if any field is empty
-      Alert.alert("Error", "Please enter your title and content.");
-    } else {
-      try {
-        // Make a POST request to the API endpoint with the user object as the body
-        await axios.post("http://192.168.43.213:4000/feedbacks", {
-          title: title,
-          content: content,
-          specialty: userSpecialty,
-          delegate: user,
-        }).then((response) => {
-          console.log(response.data);
-          setTitle('');
-          setContent('');
-          fetchIncidents();
-        })
-      } catch (error) {
-        // Handle the error
-        console.error("Error sending request: ", error.message);
-        // Show an alert with the error message
-        Alert.alert("Error", "Something went wrong. Please try again later.");
-      }
-    }
-  };
+    // Define a function to handle the form submission
+    const handleSubmit = async () => {
+        console.log(title)
+        console.log(content)
+        console.log(userSpecialty)
+        console.log(user)
+        // Validate the input fields
+        if (!title || !content) {
+            // Show an alert if any field is empty
+            Alert.alert("Error", "Please enter your title and content.");
+        } else {
+            try {
+                // Make a POST request to the API endpoint with the user object as the body
+                await axios.post("http://192.168.43.213:4000/feedbacks", {
+                    title: title,
+                    content: content,
+                    specialty: userSpecialty,
+                    delegate: user,
+                }).then((response) => {
+                    console.log(response.data);
+                    setTitle('');
+                    setContent('');
+                    fetchIncidents();
+                })
+            } catch (error) {
+                // Handle the error
+                console.error("Error sending request: ", error.message);
+                // Show an alert with the error message
+                Alert.alert("Error", "Something went wrong. Please try again later.");
+            }
+        }
+    };
 
 
-    useEffect(()=>{
+    useEffect(() => {
         getToken()
-      },[]);
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -110,8 +110,6 @@ const SendRequest = ({ navigation, fetchIncidents }) => {
                         value={title}
                         onChangeText={setTitle}
                         style={{ fontSize: 15, color: 'gray', marginTop: 10 }}
-
-                    // leftIcon={{ type: 'font-awesome', name: 'chevron-left' }}
                     />
 
                     <Input
@@ -125,7 +123,7 @@ const SendRequest = ({ navigation, fetchIncidents }) => {
                     />
 
                     <TouchableOpacity
-                        onPress={handleSubmit} 
+                        onPress={handleSubmit}
                         style={{
                             backgroundColor: '#326789',
                             padding: 20,
@@ -143,14 +141,7 @@ const SendRequest = ({ navigation, fetchIncidents }) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-
-                {/* <View style={{ flexDirection: "row", }}>
-                    <CustomButton />
-                    <CustomButton />
-                </View> */}
-
             </View>
-
             <View >
             </View>
         </View>
@@ -162,7 +153,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FFFFFF',
         paddingTop: 20,
-        // marginTop: 50,
     },
     card: {
         marginVertical: 16,
@@ -173,17 +163,10 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: "gray",
         margin: 20,
-        // backgroundColor: "red",
     },
 
     content: {
-        // backgroundColor: "#78a6c8",
-        // borderRadius: 12,
-        padding: 6,
         marginHorizontal: 20,
-        // borderLeftColor: "#326789",
-        // borderLeftWidth: 3,
-        // marginVertical: 16,
     },
     specialty: {
         flexDirection: 'row',
@@ -192,7 +175,6 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 16,
-        // marginLeft: 20,
         paddingTop: 40,
         fontWeight: '700',
         color: '#326789',
