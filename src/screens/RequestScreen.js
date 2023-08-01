@@ -59,9 +59,25 @@ const RequestScreen = ({ navigation }) => {
     const [user, setUser] = useState('')
     const [userSpecialty, setUserSpecialty]= useState('')
 
-    const fetchIncidents = async () => {
+     // get the token
+     async function getToken() {
         try {
-            await axios.get(`http://192.168.43.213:4000/feedbacks/specialty/${userSpecialty}`)
+        let userDetails = await AsyncStorage.getItem('userInfo');
+        // console.log("user info is" + userDetails);
+        const details = JSON.parse(userDetails)
+        console.log('specialty info',details.user.specialty._id);
+        setUserSpecialty(details.user.specialty._id)
+        console.log("n",userSpecialty)
+        } catch (error) {
+        console.log("error while getting token",error);
+        }
+    }
+    
+
+    const fetchIncidents = async () => {
+        console.log("m",userSpecialty )
+        try {
+            await axios.get(`http://192.168.43.213:4000/feedbacks/specialty/64913c4f0d166ad42d603a22`)
                 .then((response) => {
                     console.log(response.data)
                     const result = response.data.data
@@ -75,19 +91,7 @@ const RequestScreen = ({ navigation }) => {
 
     }
 
-    // get the token
-    async function getToken() {
-        try {
-        let userDetails = await AsyncStorage.getItem('userInfo');
-        // console.log("user info is" + userDetails);
-        const details = JSON.parse(userDetails)
-        console.log('specialty info',details.user.specialty._id);
-        setUserSpecialty(details.user.specialty._id)
-        console.log(userSpecialty)
-        } catch (error) {
-        console.log("error while getting token",error);
-        }
-    }
+   
 
     useEffect(()=>{
       // fetchSpecialties();
@@ -100,7 +104,7 @@ const RequestScreen = ({ navigation }) => {
             case "All Requests":
                 return (
                     <View style={styles.popularCards}>
-                        {requests.map((item) =>(
+                       {requests.map((item) =>(
                             <ViewRequest key={item._id} item={item}/>
                         ))}                       
                     </View>
@@ -111,7 +115,7 @@ const RequestScreen = ({ navigation }) => {
                 return (
                     <View style={styles.popularCards}>
 
-                        <SendRequest />
+                        <SendRequest fetchIncidents={fetchIncidents} />
                     </View>
 
                 )
