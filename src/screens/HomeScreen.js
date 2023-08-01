@@ -130,10 +130,12 @@ const HomeScreen = () => {
             screenOptions={({ route }) => ({
               tabBarIcon: ({ color }) => screenOptions(route, color),
               headerShown: false,
-              tabBarActiveTintColor: "#326789",
-              tabBarInactiveTintColor: "#46474a",
+              tabBarActiveTintColor: "black",
+              tabBarInactiveTintColor: "white",
               tabBarStyle: {
                 elevation: 0,
+                backgroundColor: "#326789",
+
               }
             })}
           >
@@ -154,6 +156,8 @@ const HomeScreen = () => {
               tabBarInactiveTintColor: "#46474a",
               tabBarStyle: {
                 elevation: 0,
+                backgroundColor: "#326789",
+
               }
             })}
           >
@@ -172,7 +176,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
-        backgroundColor: "cyan",
+        backgroundColor: "#326789",
         flex: 1,
         alignItems: "center"
     }

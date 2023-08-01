@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { addDays } from 'date-fns';
 import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // import { View, StyleSheet, ScrollView, Text } from 'react-native';
 // import WeekCalendar from '../components/WeekCalendar';
@@ -13,9 +14,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
+
 const TmeTableScreen = () => {
     const [timetable, setTimetable] = useState({})
     const [weeklyTimetable, setWeeklyTimetable] = useState([])
+    const [user, setUser] = useState('');
+
+    const [mondayOfCurrentWeek, setMondayOfCurrentWeek] = useState('');
+    const mondayRef = useRef('');
+
     // const [monDayDate, setMonDayDate] = useState('')
 
     const [selectedStartDate, setSelectedStartDate] = useState(null);
@@ -26,13 +33,62 @@ const TmeTableScreen = () => {
 
     const startDate = selectedStartDate ? selectedStartDate.toString() : '';
 
+    useEffect(() => {
+        // Function to get the date for Monday of the current week
+        const getMondayOfCurrentWeek = () => {
+          const currentDate = new Date();
+          const currentDay = currentDate.getDay();
+          const diff = currentDay === 0 ? -6 : 1 - currentDay; // Adjust for Sunday as the first day of the week
+          const monday = new Date(currentDate);
+          monday.setDate(currentDate.getDate() + diff);
+          return monday.toISOString().split("T")[0];
+        };
+    
+        // Call the function to get the date for Monday of the current week
+        const monday = getMondayOfCurrentWeek();
+        setMondayOfCurrentWeek(monday);
+        mondayRef.current = monday; // Store the value in the ref
+      }, []);
+
+    // get the token
+    async function getToken() {
+    try {
+        let userDetails = await AsyncStorage.getItem('userInfo');
+        // console.log("user info is" + userDetails);
+        // console.log(userDetails.email)
+        const details = JSON.parse(userDetails)
+        setUser(details.user)
+        // console.log(user)
+        } catch (error) {
+        console.log("error while getting token",error);
+    }
+    }
+
     const fetchTimetable = async () => {
+        console.log("test", mondayRef.current); // Access the value from the ref
+
         try {
-            await axios.get('http://192.168.43.213:4000/timeTables/weeklyTimetable/2023-07-10')
+            await axios.post(`http://192.168.43.213:4000/timetables/weeklyTimetable`, {
+                weekStartDate:mondayRef.current,
+                specialtyId: "648f91317dfa27d9439555f8"
+            })
                 .then((response) => {
-                    const result = response.data.timetable
-                    console.log("result",result )
-                    setWeeklyTimetable(result)
+                    const result = response.data.timetableWithCourseDates
+                    console.log('res', result)
+                    const allTimetables = response.data.timetableWithCourseDates.map(item => item.timetable).flat();
+                    const dayOrder = {
+                        Sunday: 0,
+                        Monday: 1,
+                        Tuesday: 2,
+                        Wednesday: 3,
+                        Thursday: 4,
+                        Friday: 5,
+                        Saturday: 6,
+                      };
+
+                      allTimetables.sort((a, b) => dayOrder[a.day] - dayOrder[b.day]);
+
+                    setWeeklyTimetable(allTimetables)
                     console.log("timetable", weeklyTimetable)
                 })
         } catch (error) {
@@ -41,25 +97,22 @@ const TmeTableScreen = () => {
 
     }
 
-    //to get current monday of the week and pass it as parameter for the get time table api
-    // const getMondayOfCurrentWeek = () => {
-    //     const currentDate = new Date();
-    //     const currentDay = currentDate.getDay();
-    //     const daysUntilMonday = currentDay === 0 ? 6 : currentDay - 1;
-    //     const mondayDate = new Date(currentDate.getTime());
-    //     mondayDate.setDate(currentDate.getDate() - daysUntilMonday);
-    //     console.log(mondayDate)
-    //     setMonDayDate(mondayDate)
-    //     console.log("monDayDate", monDayDate)
-    //     return mondayDate;
-    //   };
-      
-      
+    const getStatusColor = (status) => {
+        switch (status) {
+          case 'Planned':
+            return '#326789';
+          case 'Ongoing':
+            return 'green';
+          case 'Completed':
+            return 'grey';
+          default:
+            return 'black'; // Default color if the status doesn't match any case
+        }
+      };
+
     useEffect(() => {
+        getToken();
         fetchTimetable();
-        // getMondayOfCurrentWeek()
-        // getToken()
-        // fetchUsers();
     }, []);
    
     return (
@@ -81,7 +134,7 @@ const TmeTableScreen = () => {
             </View>
             <View style={styles.card}>
 
-                    {weeklyTimetable.length > 0 && weeklyTimetable?.map((item) => (
+                    { weeklyTimetable?.map((item) => (
                         <View style={styles.content} key={item._id}>
                         <ListItem bottomDivider>
                         <View style={{ flexDirection: 'column', }}>
@@ -99,7 +152,11 @@ const TmeTableScreen = () => {
                             <ListItem.Title style={{color:'#326789', fontSize:16, fontWeight:'700'}}>{item.course?.name}</ListItem.Title>
                             <ListItem.Subtitle style={{color:'gray', fontSize:11,}}>Teacher: {item.teacher?.name}</ListItem.Subtitle>
                         </ListItem.Content>
+                        <Text style={{color:'gray', fontSize:10, fontWeight:'700', textAlign:"center"}}>{item.day}</Text>
+                        <Text style={{fontSize:8, fontWeight:'900', textAlign:"center", color: getStatusColor(item.status) }}>{item.status}</Text>
+
                     </ListItem>
+                    
                     </View>
                     ))}
             </View>
@@ -124,14 +181,14 @@ const styles = StyleSheet.create({
     },
 
     content: {
-        // backgroundColor: "#78a6c8",
-        // borderRadius: 12,
-        // padding: 6,
         marginHorizontal: 20,
         borderLeftColor: "#326789",
         borderLeftWidth: 3,
-        // marginVertical: 16,
     },
+    timetableText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
 });
 
 

@@ -9,6 +9,7 @@ import ViewRequest from '../components/requests/ViewRequest';
 // import Tabs from './tabs';
 import Tabs from '../components/requests/Tabs';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Announcements = [
     {
@@ -55,22 +56,44 @@ const Item = ({ item }) => {
 const RequestScreen = ({ navigation }) => {
     const [requests, setRequests] = useState([])
     const [activeTab, setActiveTab] = useState(tabs[0]);
+    const [user, setUser] = useState('')
+    const [userSpecialty, setUserSpecialty]= useState('')
 
     const fetchIncidents = async () => {
         try {
-            await axios.get('http://192.168.43.213:4000/feedbacks')
+            await axios.get(`http://192.168.43.213:4000/feedbacks/specialty/${userSpecialty}`)
                 .then((response) => {
-                    console.log(response.data.data)
+                    console.log(response.data)
                     const result = response.data.data
                     setRequests(result)
-                    console.log("Requests", result)
-                    console.log("Requests", requests)
+                    // console.log("Requests", result)
+                    // console.log("Requests", requests)
                 })
         } catch (error) {
             console.log("error", error)
         }
 
     }
+
+    // get the token
+    async function getToken() {
+        try {
+        let userDetails = await AsyncStorage.getItem('userInfo');
+        // console.log("user info is" + userDetails);
+        const details = JSON.parse(userDetails)
+        console.log('specialty info',details.user.specialty._id);
+        setUserSpecialty(details.user.specialty._id)
+        console.log(userSpecialty)
+        } catch (error) {
+        console.log("error while getting token",error);
+        }
+    }
+
+    useEffect(()=>{
+      // fetchSpecialties();
+      getToken()
+      // fetchUsers();
+    },[]);
 
     const displayTabContent = () => {
         switch (activeTab) {
@@ -104,7 +127,7 @@ const RequestScreen = ({ navigation }) => {
         // fetchUsers();
     }, []);
     useEffect(() => {
-    console.log("Requests", requests); // Log the updated requests state
+    // console.log("Requests", requests); // Log the updated requests state
   }, [requests]);
 
     return (

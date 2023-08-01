@@ -132,7 +132,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     paddingTop: 40,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
+    // paddingBottom: 20,
   },
   heading: {
     fontSize: 22,

@@ -70,6 +70,7 @@ export default function ScannerScreen() {
   }
   const onModalClose = () => {
     setIsModalVisible(false);
+    setText('');
   };
   // Return the View
   return (
@@ -88,7 +89,7 @@ export default function ScannerScreen() {
         <BarCodeScanner 
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={{ height: 520, width: 500}}>
-            <BarcodeMask width={300} height={300} showAnimatedLine={false} edgeColor="#326789"/>
+            <BarcodeMask width={300} height={300} showAnimatedLine={true} animatedLineColor='#326789' edgeColor="#326789"/>
           </BarCodeScanner>
       </View>
       <Text style={styles.maintext}>{!scanned && 'Not scanned yet'}</Text>

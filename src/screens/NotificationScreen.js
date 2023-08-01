@@ -46,7 +46,7 @@ const Item = ({ item }) => {
                 <ListItem.Content>
                     <ListItem.Title style={{ fontWeight: '700',}}>{item.title}</ListItem.Title>
                     <ListItem.Subtitle style={{fontSize: 12}}>{item.content}</ListItem.Subtitle>
-                    <Text style={{fontSize: 8,  marginTop: 7,color:'grey'}}>{item.date.split('T')}</Text>
+                    <Text style={{fontSize: 8,  marginTop: 7,color:'grey'}}>{item.date.split('T')[0]}</Text>
                   
                 </ListItem.Content>
             </ListItem>
@@ -135,13 +135,14 @@ const Notification = ({navigation}) => {
                 
             </View>
 
-            <ScrollView style={styles.card}>            
+            <View style={styles.card}>            
                 <FlatList
                     data={announcements}
                     renderItem={({ item }) => <Item item={item} />}
                     keyExtractor={item => item._id}
+                    scrollEnabled={true}
                 />
-            </ScrollView>
+            </View>
 
             <View >
             </View>
