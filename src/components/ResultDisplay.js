@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 // import Icons from 'react-native-vector-icons/MaterialIcons';
 
-export default function ResultDisplay({ isVisible, onClose, text }) {
+export default function ResultDisplay({ isVisible, onClose, text, ongoing }) {
   const { name, email, role, phone, fee_paid, _id, specialty_id } = text || {}; // Destructure the properties from the text object, providing an empty object as the default value
 
   const [user, setUser] = useState(null);
@@ -29,8 +29,12 @@ export default function ResultDisplay({ isVisible, onClose, text }) {
       getToken();
     }, []);
 
+   const markAttendance = async(ongoing,_id ) =>{
+    //console.log(`Marking attendance for ${text}`);
+   } 
+
     const renderPresentButton = () => {
-      if (user?.role === 'delegate') {
+      if (user?.role === 'delegate' && ongoing) {
         return (
           <TouchableOpacity
             style={styles.presentButton}

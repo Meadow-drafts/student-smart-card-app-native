@@ -46,8 +46,18 @@ const TmeTableScreen = () => {
     
         // Call the function to get the date for Monday of the current week
         const monday = getMondayOfCurrentWeek();
-        setMondayOfCurrentWeek(monday);
-        mondayRef.current = monday; // Store the value in the ref
+        const dateParts = monday.split("-");
+        const year = dateParts[0];
+        const month = dateParts[1];
+        const day = dateParts[2];
+        
+        // Creating a new Date object using the input date parts
+        const formattedDate = new Date(year, month - 1, day);
+        
+        // Using toLocaleDateString() to convert to desired format "m/d/yyyy"
+        const convertedDate = formattedDate.toLocaleDateString("en-US");
+        setMondayOfCurrentWeek(convertedDate);
+        mondayRef.current = convertedDate; // Store the value in the ref
       }, []);
 
     // get the token
@@ -73,9 +83,9 @@ const TmeTableScreen = () => {
                 specialtyId: "648f91317dfa27d9439555f8"
             })
                 .then((response) => {
-                    const result = response.data.timetableWithCourseDates
+                    const result = response.data.timetables
                     console.log('res', result)
-                    const allTimetables = response.data.timetableWithCourseDates.map(item => item.timetable).flat();
+                    const allTimetables = response.data.timetables.map(item => item.timetable).flat();
                     const dayOrder = {
                         Sunday: 0,
                         Monday: 1,
@@ -138,14 +148,14 @@ const TmeTableScreen = () => {
                         <View style={styles.content} key={item._id}>
                         <ListItem bottomDivider>
                         <View style={{ flexDirection: 'column', }}>
-                            <Text style={{color:'gray', fontSize:10, fontWeight:'700'}}>{item.time?.split('-')[0]}</Text>
+                            <Text style={{color:'gray', fontSize:10, fontWeight:'700'}}>{item.startTime}</Text>
                             <Ionicons
                                 name="remove"
                                 size={30}
                                 color="#326789"
                                 // style={{ transform: [{ rotate: '90deg' }], marginTop: 10 }}
                             />
-                            <Text style={{color:'gray', fontSize:10, fontWeight:'700'}}>{item.time?.split('-')[1]}</Text>
+                            <Text style={{color:'gray', fontSize:10, fontWeight:'700'}}>{item.stopTime}</Text>
                         </View>
             
                         <ListItem.Content>

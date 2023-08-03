@@ -6,6 +6,7 @@ import CustomButton from '../components/CustomButton';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import ResultDisplay from '../components/ResultDisplay';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 
 
 
@@ -17,6 +18,7 @@ export default function ScannerScreen() {
   const [text, setText] = useState({})
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [user, setUser] = useState(null);
+  const [ongoing , setOngoing] = useState('')
 
   const getToken = async () => {
     try {
@@ -27,9 +29,23 @@ export default function ScannerScreen() {
     } catch (error) {
       console.log("Error while getting token", error);
     }
-  };    
+  };  
+  const fetchOngoingCourses= async () => {
+    try {
+        await axios.get(`http://192.168.43.213:4000/ongoing`)
+            .then((response) => {
+                const result = response.data
+                console.log('res', result[0].timetable.course)
+                setOngoing(result[0].timetable.course)               
+            })
+    } catch (error) {
+        console.log("error", error)
+    }
+
+}  
   useEffect(() => {
       getToken();
+      fetchOngoingCourses();
     }, []);
 
   const askForCameraPermission = () => {
@@ -96,7 +112,7 @@ export default function ScannerScreen() {
       <CustomButton label={"Scan Code"} onPress={() => setIsModalVisible(true)} />
 
       {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
-      <ResultDisplay isVisible={isModalVisible} onClose={onModalClose} text={text} >
+      <ResultDisplay isVisible={isModalVisible} onClose={onModalClose} text={text} ongoing={ongoing} >
         {/* <ResultList onCloseModal={onModalClose} weapons= {weapons} alcohol={alcohol} drugs={drugs}  skull={skull} gore={goreResults} nudity={nudityResults}/> */}
       </ResultDisplay>
     </View>
