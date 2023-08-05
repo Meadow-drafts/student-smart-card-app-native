@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button,Modal } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { BarCodeScanner  } from 'expo-barcode-scanner';
 import BarcodeMask from 'react-native-barcode-mask';
 import CustomButton from '../components/CustomButton';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
@@ -18,18 +18,25 @@ export default function ScannerScreen() {
   const [text, setText] = useState({})
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [user, setUser] = useState(null);
-  const [ongoing , setOngoing] = useState('')
+  const [ongoing , setOngoing] = useState('');
+  const [isScanning, setIsScanning] = useState(true); // New state for scanning control
+  const [torchOn, setTorchOn] = useState(false);
 
-  const getToken = async () => {
+
+  // get the token
+  async function getToken() {
     try {
-      let userDetails = await AsyncStorage.getItem('userInfo');
-      const details = JSON.parse(userDetails);
-      setUser(details.user);
-      console.log(user.role)
+    let userDetails = await AsyncStorage.getItem('userInfo');
+    console.log("user info is" + userDetails);
+    console.log(userDetails.email)
+    const details = JSON.parse(userDetails)
+    setUser(details.user)
+    console.log(user)
     } catch (error) {
-      console.log("Error while getting token", error);
+    console.log("error while getting token",error);
     }
-  };  
+}
+
   const fetchOngoingCourses= async () => {
     try {
         await axios.get(`http://192.168.43.213:4000/ongoing`)
@@ -60,15 +67,29 @@ export default function ScannerScreen() {
     askForCameraPermission();
   }, []);
 
+  const desiredBarCodeTypes = [
+    BarCodeScanner.Constants.BarCodeType.qr, // QR code
+    BarCodeScanner.Constants.BarCodeType.code128, // Code 128
+    // Add more barcode types as needed
+  ];
+
   // What happens when we scan the bar code
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    
-    // console.log('Type: ' + type + '\nData: ' + data)
-    const response = JSON.parse(data)
-    setText(response)
-    console.log(response.name)
+     // Add a check for isScanning before handling the scan
+     if (!isScanning) {
+      return;
+    } 
+    setScanned(true);    
+    const response = JSON.parse(data);
+    setText(response);
+    console.log(response.name);
+    setIsScanning(false); // Disable scanning while the modal is open
+    setIsModalVisible(true);
   };
+  const toggleTorch = () => {
+    setTorchOn(!torchOn);
+  };
+  
 
   // Check permissions and return the screens
   if (hasPermission === null) {
@@ -84,9 +105,13 @@ export default function ScannerScreen() {
         <Button title={'Allow Camera'} onPress={() => askForCameraPermission()} />
       </View>)
   }
+
   const onModalClose = () => {
+    setScanned(false);
     setIsModalVisible(false);
     setText('');
+    setIsScanning(true); // Re-enable scanning after closing the modal
+
   };
   // Return the View
   return (
@@ -103,13 +128,20 @@ export default function ScannerScreen() {
       </View>
       <View style={styles.barcodebox}>
         <BarCodeScanner 
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          onBarCodeScanned={ handleBarCodeScanned}
+          barCodeTypes={desiredBarCodeTypes}
+          torchMode={torchOn ? 'on' : 'off'}
           style={{ height: 520, width: 500}}>
             <BarcodeMask width={300} height={300} showAnimatedLine={true} animatedLineColor='#326789' edgeColor="#326789"/>
           </BarCodeScanner>
       </View>
       <Text style={styles.maintext}>{!scanned && 'Not scanned yet'}</Text>
-      <CustomButton label={"Scan Code"} onPress={() => setIsModalVisible(true)} />
+      <CustomButton label={"Scan Code"} onPress={() => setScanned(false)} />
+      <Button
+  title={torchOn ? 'Turn Off Torch' : 'Turn On Torch'}
+  onPress={toggleTorch}
+  color={torchOn ? 'tomato' : undefined}
+/>
 
       {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
       <ResultDisplay isVisible={isModalVisible} onClose={onModalClose} text={text} ongoing={ongoing} >

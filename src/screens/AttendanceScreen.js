@@ -10,7 +10,7 @@ import TableComponent from '../components/TableComponent';
 
 const AttendanceScreen = () => {
   const flatListRef = useRef(null);
-
+  
    
   
     // Render the calendar component

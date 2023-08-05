@@ -14,6 +14,28 @@ const TableComponent = () => {
 
     const flatListRef = useRef(null);
 
+    const [ongoing , setOngoing] = useState('')
+    const courseRef = useRef(null)
+    const [ongoingCoursesFetched, setOngoingCoursesFetched] = useState(false);
+
+    
+    const fetchOngoingCourses= async () => {
+      try {
+          await axios.get(`http://192.168.43.213:4000/ongoing`)
+              .then((response) => {
+                  const result = response.data
+                  console.log('res', result[0].timetable.course)
+                  setOngoing(result[0].timetable.course);
+                  courseRef.current =  result[0].timetable.course 
+                  setOngoingCoursesFetched(true); // Set the flag to true after fetching ongoing courses.
+             
+              })
+      } catch (error) {
+          console.log("error", error)
+      }
+  
+  }
+
     const handlePDFGeneration = async () => {
         // Get the data from the FlatList component
         const data = flatListRef.current.props.data;
@@ -51,10 +73,11 @@ const TableComponent = () => {
     const [filter, setFilter] = useState(null);
 
     const fetchAttendance = async () => {
+        console.log(courseRef.current)
         try {
-            await axios.get('http://192.168.43.213:4000/attendances')
+            await axios.get(`http://192.168.43.213:4000/attendances/course/${courseRef.current }`)
                 .then((response) => {
-                    //  console.log(response.data.data)
+                     console.log(response.data.data)
                     //  console.log(JSON.parse(response.data.data))
                     const result = response.data.data
                     setAttendance(result)
@@ -82,10 +105,16 @@ const TableComponent = () => {
         );
     };
 
-
     useEffect(() => {
-        fetchAttendance();
-    }, []);
+        fetchOngoingCourses();
+      }, []); //
+
+
+      useEffect(() => {
+        if (ongoingCoursesFetched) {
+          fetchAttendance(); // Run fetchAttendance only after fetchOngoingCourses has completed.
+        }
+      }, [ongoingCoursesFetched]); // Depend on ongoingCoursesFetched to trigger fetchAttendance.
 
     // Render the table
     return (
