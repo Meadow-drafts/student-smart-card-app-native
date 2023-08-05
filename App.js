@@ -84,8 +84,7 @@ useEffect(()=>{
           <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
         ) : (
           <>
-            {isAuthenticated ? (
-              <>
+          
                 <Stack.Screen name="HomeScreen" component={HomeScreen} />
                 <Stack.Screen
                   name="AllSpecialtiesScreen"
@@ -94,17 +93,14 @@ useEffect(()=>{
                 <Stack.Screen name="Notification" component={Notification} />
                 <Stack.Screen name="Request" component={RequestScreen} />
                 <Stack.Screen name="Report" component={IncidentReportScreen} />
-              </>
-            ) : (
-              <>
+             
                 <Stack.Screen name="LoginScreen" component={LoginScreen} />
                 <Stack.Screen
                   name="RegisterScreen"
                   component={RegisterScreen}
                 />
               </>
-            )}
-          </>
+            
         )}
          
         </Stack.Navigator>

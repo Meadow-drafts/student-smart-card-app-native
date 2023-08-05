@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Button, SafeAreaView, StyleSheet, Text, View,Alert, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ListItem, Avatar, Input } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import CustomButton from '../components/CustomButton';
-
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 
@@ -21,9 +22,7 @@ const ReportIncident = ({fetchIncidents}) => {
             // console.log("user info is" + userDetails);
             const details = JSON.parse(userDetails)
             console.log('specialty info', details.user);
-            setUserSpecialty(details.user.specialty._id)
             setUser(details.user._id)
-            console.log("n", userSpecialty)
         } catch (error) {
             console.log("error while getting token", error);
         }
@@ -44,7 +43,7 @@ const ReportIncident = ({fetchIncidents}) => {
                 await axios.post("http://192.168.43.213:4000/incidents", {
                     title: title,
                     content: content,
-                    delegate: user,
+                    securityOfficer: user,
                 }).then((response) => {
                     console.log(response.data);
                     setTitle('');

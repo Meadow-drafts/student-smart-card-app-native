@@ -7,6 +7,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import ResultDisplay from '../components/ResultDisplay';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
+import { Camera } from 'expo-camera';
 
 
 
@@ -110,7 +111,7 @@ export default function ScannerScreen() {
     setScanned(false);
     setIsModalVisible(false);
     setText('');
-    setIsScanning(true); // Re-enable scanning after closing the modal
+    // setIsScanning(true); // Re-enable scanning after closing the modal
 
   };
   // Return the View
@@ -132,16 +133,22 @@ export default function ScannerScreen() {
           barCodeTypes={desiredBarCodeTypes}
           torchMode={torchOn ? 'on' : 'off'}
           style={{ height: 520, width: 500}}>
-            <BarcodeMask width={300} height={300} showAnimatedLine={true} animatedLineColor='#326789' edgeColor="#326789"/>
+            
+            <BarcodeMask
+             width={300}
+             height={300}
+             showAnimatedLine={true} 
+             animatedLineColor='#326789' 
+             edgeColor="#326789"/>
           </BarCodeScanner>
       </View>
       <Text style={styles.maintext}>{!scanned && 'Not scanned yet'}</Text>
       <CustomButton label={"Scan Code"} onPress={() => setScanned(false)} />
-      <Button
+      {/* <Button
   title={torchOn ? 'Turn Off Torch' : 'Turn On Torch'}
   onPress={toggleTorch}
   color={torchOn ? 'tomato' : undefined}
-/>
+/> */}
 
       {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
       <ResultDisplay isVisible={isModalVisible} onClose={onModalClose} text={text} ongoing={ongoing} >

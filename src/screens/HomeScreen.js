@@ -152,8 +152,8 @@ const HomeScreen = () => {
             screenOptions={({ route }) => ({
               tabBarIcon: ({ color }) => screenOptions(route, color),
               headerShown: false,
-              tabBarActiveTintColor: "#326789",
-              tabBarInactiveTintColor: "#46474a",
+              tabBarActiveTintColor: "black",
+              tabBarInactiveTintColor: "white",
               tabBarStyle: {
                 elevation: 0,
                 backgroundColor: "#326789",

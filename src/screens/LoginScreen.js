@@ -57,10 +57,14 @@ const LoginScreen = ({ navigation }) => {
           // Create an object with the user credentials
           const user = response.data
           console.log(user)
+
           // Store the access token on device storage
           AsyncStorage.setItem('userInfo', JSON.stringify(user), (error) => {
             if (error) {
               console.log(error);
+            }else{
+              navigation.navigate('HomeScreen');
+ 
             }
           });
         })
@@ -185,9 +189,9 @@ const LoginScreen = ({ navigation }) => {
           }}>
 
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
           <Text style={{ color: '#78a6c8', fontWeight: '700' }}> HomeScreen</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {/* 
         <View
           style={{
