@@ -4,9 +4,19 @@
 
 Welcome to the Student Smart Card App (Native) repository! This application provides a native mobile solution for universities and educational institutions to manage access control and attendance tracking using QR code technology. The app enables security officers to control access to various areas, and department delegates can efficiently track student attendance using QR codes.
 
+
+
+<p align="center">
+  <img src="https://github.com/Meadow-drafts/student-smart-card-app-native/assets/106629154/2fa3f282-c56d-4850-9404-d69200f3f207" width="250" alt="Image 1">
+  <img src="https://github.com/Meadow-drafts/student-smart-card-app-native/assets/106629154/cb7abfc3-b25c-427f-900b-224d6593e78e" width="250" alt="Image 2">
+  <img src="https://github.com/Meadow-drafts/student-smart-card-app-native/assets/106629154/54c9f69f-fd89-4d97-acbe-94630671c25b" width="250" alt="Image 3">
+</p>
+
+
 ## Table of Contents
 
 - [Features](#features)
+
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
